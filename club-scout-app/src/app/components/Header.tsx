@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Sun, Moon } from "lucide-react"; // Icons for light/dark mode
 
-const Header = () => {
+const Header: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   // Toggle dark mode
