@@ -19,3 +19,9 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* When dark mode is enabled via class */
+html.dark body {
+  background-color: #171717; /* Dark background for the entire app */
+  color: var(--background)
+}
