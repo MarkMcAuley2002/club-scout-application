@@ -1,23 +1,17 @@
 'use client'
 import React from "react";
 
-interface ClubCardProps {
+export interface ClubCardProps {
   imageUrl: string; // Replace with an actual image URL
   clubName: string;
   description: string;
   tags: string[];
+  key: number;
 };
-
-// const ClubCardProps = {
-//   imageUrl: "/path-to-image.jpg", // Replace with an actual image URL
-//   clubName: "Adventure Club",
-//   description: "Join us for exciting outdoor adventures and hiking challenges.",
-//   tags: ["Outdoors", "Hiking", "Adventure"],
-// };
 
 const ClubCard: React.FC<ClubCardProps> = ({imageUrl,clubName, description, tags}: ClubCardProps) => {
 return (
-  <div className="max-w-sm rounded-lg shadow-lg bg-white dark:bg-gray-800 overflow-hidden">
+  <div className="p-4 rounded shadow max-w-sm bg-gray-100 dark:bg-gray-800 overflow-hidden">
     <div className="flex">
       {/* Left: Profile Image */}
       <div className="w-1/3">
