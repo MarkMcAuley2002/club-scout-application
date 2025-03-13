@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useActionState } from "react";
-import { signup } from "@/app/actions/auth";
-import { FormInput } from "lucide-react";
-import { z } from "zod";
-import { useFormState } from "react-dom";
+import { signin, signup } from "@/app/actions/auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export interface SignInFormData {
   email?: FormDataEntryValue | null;
@@ -13,7 +11,13 @@ export interface SignInFormData {
 }
 
 const SignInForm: React.FC = () => {
-  const [state, action, pending] = useActionState(signup, undefined);
+   const router = useRouter();
+  const [state, action, pending] = useActionState(signin, undefined);
+
+
+  if(state){
+    console.log(state.message);
+  }
 
   return (
     <div className="bg-gray-100 shadow-md rounded-md p-5">

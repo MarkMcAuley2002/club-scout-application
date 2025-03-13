@@ -1,4 +1,4 @@
-import { UserSchema } from "@/app/lib/definitions";
+import { NewUserSchema } from "@/app/lib/definitions";
 import { db } from "@/lib/prisma";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
@@ -16,7 +16,7 @@ export async function POST(request: Request) {
      }
 
     const body = await request.json();
-    const { email, username, password } = UserSchema.parse(body);
+    const { email, username, password } = NewUserSchema.parse(body);
 
     // Check if the email already exists
     const existingUserbyEmail = await db.user.findUnique({

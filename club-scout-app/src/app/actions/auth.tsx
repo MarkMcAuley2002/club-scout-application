@@ -1,9 +1,9 @@
-"use server";
+"use client";
 
-import { z } from "zod";
 import { SignInFormSchema, SignUpFormSchema } from "../lib/definitions";
 import { SignUpFormData } from "@/components/form/SignUpForm";
 import { SignInFormData } from "@/components/form/SignInForm";
+import { signIn } from "next-auth/react";
 
 export async function signup(prevSate: unknown, formData: FormData) {
   const validateFormFields = SignInFormSchema.safeParse({
@@ -36,38 +36,50 @@ export async function signup(prevSate: unknown, formData: FormData) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: formData.get("username"),
-        email: formData.get("email"),
-        password: formData.get("password"),
+        username: rawData.username,
+        email: rawData.email,
+        password: rawData.password,
       }),
     });
 
     if (!response.ok) {
-      return { success: false, message: "Failed to register user" };
+      return { success: false, message: "Club Scout: Failed to register user" };
     } else {
       return { success: true, message: "User registered" };
     }
   } catch (error) {
-    return { success: false, message: "Server error", error };
+    return { success: false, message: "Club Scout: Server error", error };
   }
 }
 
-export async function signIn(prevSate: unknown, formData: FormData) {
+export async function signin(prevSate: unknown, formData: FormData) {
   const rawData: SignInFormData = {
     email: formData.get("email"),
     password: formData.get("password"),
   };
 
-  const validatedData = SignUpFormSchema.safeParse(rawData);
+  const validatedData = SignInFormSchema.safeParse(rawData);
   if (!validatedData.success) {
     return {
       success: false,
-      message: "Invalid input",
+      message: "Club Scout: Unable to validate user data",
       errors: validatedData.error.flatten().fieldErrors,
       input: rawData,
     };
   }
-  return { success: true, message: "Signup successful!" };
+
+  // StartHere
+  
+  const signInData = await signIn("credentials", {
+    email: rawData.email,
+    password: rawData.password,
+    callbackUrl: '/admin'
+  })
+  if(signInData?.error){
+    console.log(signInData.error);
+  }else{
+    return { success: true, message: "Successfully signed in user" }; 
+  }
 
   // Call provider Database to create a user or check if one already exists.
 }

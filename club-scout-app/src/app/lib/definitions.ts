@@ -7,7 +7,7 @@ export const SignInFormSchema = z.object({
     .trim(),
   password: z
     .string()
-    .min(1, { message: "This field is required" })
+    .nonempty({ message: "This field is required" })
     .min(8, { message: "Password must be at least 8 characters long" })
     .regex(/^(?=.*[a-zA-Z])(?=.*\d).+$/, {
       message: "Must contain at least one letter and one number",
@@ -29,11 +29,12 @@ export const SignUpFormSchema = z
       .trim(),
     email: z
       .string()
+      .nonempty({ message: "This field is required" })
       .email({ message: "Please enter a valid email address" })
       .trim(),
     password: z
       .string()
-      .min(1, { message: "This field is required" })
+      .nonempty({ message: "This field is required" })
       .min(8, { message: "Password must be at least 8 characters long" })
       .regex(/^(?=.*[a-zA-Z])(?=.*\d).+$/, {
         message: "Must contain at least one letter and one number",
@@ -41,7 +42,7 @@ export const SignUpFormSchema = z
       .trim(),
     confirmPassword: z
       .string()
-      .min(1, { message: "This field is required" })
+      .nonempty({ message: "This field is required" })
       .trim(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -50,7 +51,7 @@ export const SignUpFormSchema = z
   });
 
 // Define a Schema for input validation 
-export const UserSchema = z.object({
+export const NewUserSchema = z.object({
   username: z
     .string()
     .nonempty({ message: "This field is required" })
@@ -66,7 +67,7 @@ export const UserSchema = z.object({
     .trim(),
   password: z
     .string()
-    .min(1, { message: "This field is required" })
+    .nonempty({ message: "This field is required" })
     .min(8, { message: "Password must be at least 8 characters long" })
     .regex(/^(?=.*[a-zA-Z])(?=.*\d).+$/, {
       message: "Must contain at least one letter and one number",
