@@ -3,17 +3,17 @@ import { db } from "@/lib/prisma";
 import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
 
+// This endpoint will be used to create a new user and user profile.
 // Route handler https://next-auth.js.org/configuration/initialization#route-handlers-app
 export async function POST(request: Request) {
   // Get the route
   try {
-
-     if (!request.body) {
-       return NextResponse.json(
-         { error: "Request body is missing" },
-         { status: 400 }
-       );
-     }
+    if (!request.body) {
+      return NextResponse.json(
+        { error: "Request body is missing" },
+        { status: 400 }
+      );
+    }
 
     const body = await request.json();
     const { email, username, password } = NewUserSchema.parse(body);
@@ -25,19 +25,22 @@ export async function POST(request: Request) {
 
     if (existingUserbyEmail) {
       return NextResponse.json(
-        { user: 'none', message: "User with this email already exists" },
+        { user: "none", message: "User with this email already exists" },
         { status: 409 }
       );
     }
 
     // Check if the username already exists
-    const existingUserbyUsername = await db.user.findUnique({
-      where: { username: username },
-    }).catch((reason) => {
-      return NextResponse.json(
-        {user: "none", message: `Error creating user ${reason}`}
-      )
-    });
+    const existingUserbyUsername = await db.user
+      .findUnique({
+        where: { username: username },
+      })
+      .catch((reason) => {
+        return NextResponse.json({
+          user: "none",
+          message: `Error creating user ${reason}`,
+        });
+      });
 
     if (existingUserbyUsername) {
       return NextResponse.json(
@@ -48,15 +51,24 @@ export async function POST(request: Request) {
 
     // Create the user
     const hashedPassword = await hash(password, 10);
-    const newUser = await db.user.create({
-      data: {
-        email,
-        username,
-        password: hashedPassword,
-      },
+
+    const newUser = await db.$transaction(async (prisma) => {
+      const user = await prisma.user.create({
+        data: {
+          email,
+          username,
+          password: hashedPassword,
+          profile: {
+            create: {},
+          },
+        },
+        include: { profile: true },
+      });
+
+      return user;
     });
 
-    const {password: newUserPassword ,...userNoPw} = newUser;
+    const { password: newUserPassword, ...userNoPw } = newUser;
 
     return NextResponse.json(
       { user: userNoPw, message: "User created successfully" },

@@ -11,7 +11,6 @@ export interface SignInFormData {
 }
 
 const SignInForm: React.FC = () => {
-   const router = useRouter();
   const [state, action, pending] = useActionState(signin, undefined);
 
 

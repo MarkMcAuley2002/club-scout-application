@@ -7,7 +7,7 @@ interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   text: string;
 }
-
+// Use router push here instead of href 
 const ButtonLinkComponent: React.ForwardRefRenderFunction<
   HTMLAnchorElement,
   ButtonProps
@@ -17,7 +17,7 @@ const ButtonLinkComponent: React.ForwardRefRenderFunction<
       className={
         className
           ? className
-          : "bg-black rounded-xl p-1 border-solid border-2 border-bg-zinc-200 w-20 text-center text-white hover:bg-blue-300"
+          : "bg-black rounded-xl font-medium p-1 border-solid border-2 border-bg-zinc-200 w-20 text-center text-white hover:bg-blue-300"
       }
       href={href}
       onClick={onClick}

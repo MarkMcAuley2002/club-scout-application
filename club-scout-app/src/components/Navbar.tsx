@@ -3,6 +3,9 @@ import React from "react";
 import ButtonLink from "./ButtonLink";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/lib/authOptions";
+import { signOut } from "next-auth/react";
+import SignOutButton from "./SignOutButton";
+import Button from "./Button";
 
 interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -22,7 +25,6 @@ const NavBarButton: React.ForwardRefRenderFunction<
   );
 };
 
-
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
   return (
@@ -32,13 +34,17 @@ const Navbar = async () => {
           <ButtonLink text="Home"></ButtonLink>
         </Link>
         {session?.user ? (
-          <Link href="/sign-in" passHref legacyBehavior>
-            <ButtonLink text="Sign out"></ButtonLink>
-          </Link>
+          <SignOutButton />
         ) : (
-          <Link href="/sign-in" passHref legacyBehavior>
-            <ButtonLink text="Sign In"></ButtonLink>
-          </Link>
+          <div className="flex flex-row">
+            <Link href="/sign-up" passHref legacyBehavior>
+              <ButtonLink text="Sign up"></ButtonLink>
+            </Link>
+
+            <Link href="/sign-in" passHref legacyBehavior>
+              <ButtonLink text="Sign In"></ButtonLink>
+            </Link>
+          </div>
         )}
       </div>
     </div>

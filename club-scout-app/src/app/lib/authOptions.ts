@@ -70,7 +70,8 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         return {
           ...token,
-          username: user.username,
+          id: user.id, // Store the user id in the token
+          username: user.username, // Store the 
         };
       }
       return token;
@@ -80,7 +81,8 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          username: token.username,
+          id: token.id,
+          username: token.username
         },
       };
     },
