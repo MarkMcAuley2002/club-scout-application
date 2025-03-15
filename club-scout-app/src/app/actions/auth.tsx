@@ -83,3 +83,7 @@ export async function signin(prevSate: unknown, formData: FormData) {
 
   // Call provider Database to create a user or check if one already exists.
 }
+
+export async function createClub(prevSate: unknown, formData: FormData){
+  return {success: true, message: "Success"};
+}

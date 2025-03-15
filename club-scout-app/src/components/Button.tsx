@@ -10,7 +10,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button: React.FC<ButtonProps> = ({
   accent = "navigate",
-  className,
+  style,
   children,
   loading,
   onClick,
@@ -27,7 +27,7 @@ const Button: React.FC<ButtonProps> = ({
     };
 
     return (
-      <button className={`${defaultStyle} ${buttonAccept[accent]}`}
+      <button className={`${defaultStyle} ${buttonAccept[accent]} ${style}`}
       disabled={loading}
       onClick={onClick}>
         {children}

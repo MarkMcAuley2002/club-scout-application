@@ -1,58 +1,47 @@
-import Image from "next/image";
+'use client'
 import ClubCard, { ClubCardProps } from "../components/ClubCard";
+import Button from "@/components/Button";
+import { useEffect, useState } from "react";
 
-async function getClubs() {
-  // Replace this with an actual API call
-  const tags = ["Outdoors", "Sports", "Tech", "Art", "Music"];
-  const desc = "This is a sample club description";
-  const clubName = "Club Name";
-  const url =
-    "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%3Fid%3DOIP.fTWEm9c5vSGZHVoILl-BJwHaHa%26pid%3DApi&f=1&ipt=45b5dd227e353b97f74d6fd3ade06e8f6c81ecb1f75f454b80b2342ef2f2c044&ipo=images";
-  const response: ClubCardProps[] = [
-    {
-      imageUrl: url,
-      clubName: clubName,
-      description: desc,
-      tags: tags,
-      key: 1,
-    },
-    { imageUrl: url, clubName: clubName, description: desc, tags: tags },
-    ,
-    {
-      imageUrl: url,
-      clubName: clubName,
-      description: desc,
-      tags: tags,
-      key: 2,
-    },
-    {
-      imageUrl: url,
-      clubName: clubName,
-      description: desc,
-      tags: tags,
-      key: 3,
-    },
-    {
-      imageUrl: url,
-      clubName: clubName,
-      description: desc,
-      tags: tags,
-      key: 4,
-    },
-    {
-      imageUrl: url,
-      clubName: clubName,
-      description: desc,
-      tags: tags,
-      key: 5,
-    },
-  ] as ClubCardProps[];
+export default function Home() {
+  const [clubs, setClubs] = useState<ClubCardProps[]>([]);
 
-  return response;
-}
+  useEffect(() => {
+    console.log("Fetching clubs...");
+    const fetchClubs = async () => {
+      try {
+        const response = await fetch("/api/clubs"); // This is where we fetch clubs from your API
+        console.log(response);
+        if (!response.ok) {
+          throw new Error("Error Retrieving Clubs");
+        }
+        const data = await response.json();
+        console.log("Clubs data:", data);
+        setClubs(data); // Set the clubs data here
+      } catch (error) {
+        console.error("Error fetching clubs:", error);
+      }
+    };
 
-export default async function Home() {
-  const clubs = await getClubs();
+    fetchClubs(); // Call fetchClubs as soon as the page loads
+  }, []); 
+
+  // Move all of this code.
+  let showModal = false;
+
+  const handleCreateClubClick = () =>{
+    showModal = true;
+  }
+
+  const handleCloseModal = () => {
+    showModal = false; // Simulate closing modal
+  };
+
+   const handleSubmitModal = () => {
+     // Placeholder for submit logic
+     console.log("Club submitted");
+     showModal = false; // Simulate closing modal after submission
+   };
 
   return (
     <div className="grid grid-cols-[250px_1fr] min-h-screen pt-[60px]">
@@ -118,6 +107,11 @@ export default async function Home() {
                   key={club.key}
                 />
               ))}
+            </div>
+            <div className="font-bold mb-2 flex justify-end">
+              <Button accent="create" >
+                Create a club
+              </Button>
             </div>
           </div>
         </section>

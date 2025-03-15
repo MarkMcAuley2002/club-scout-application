@@ -1,5 +1,4 @@
 import { authOptions } from "@/app/lib/authOptions";
-import { NextApiRequest, NextApiResponse } from "next"
 import NextAuth from "next-auth"
 
 

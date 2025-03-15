@@ -14,17 +14,6 @@ interface ButtonProps {
   className?: string;
 }
 
-const NavBarButton: React.ForwardRefRenderFunction<
-  HTMLAnchorElement,
-  ButtonProps
-> = ({ onClick, href, text, className }, ref) => {
-  return (
-    <a className={className} href={href} onClick={onClick} ref={ref}>
-      {text}
-    </a>
-  );
-};
-
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
   return (
