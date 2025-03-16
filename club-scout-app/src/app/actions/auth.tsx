@@ -68,22 +68,21 @@ export async function signin(prevSate: unknown, formData: FormData) {
     };
   }
 
-  // StartHere
-  
+  // Call sign in with user credentials to authenticate the user session, then navigate to /admin
   const signInData = await signIn("credentials", {
     email: rawData.email,
     password: rawData.password,
-    callbackUrl: '/admin'
-  })
-  if(signInData?.error){
+    callbackUrl: "/admin",
+  });
+  if (signInData?.error) {
     console.log(signInData.error);
-  }else{
-    return { success: true, message: "Successfully signed in user" }; 
+  } else {
+    return { success: true, message: "Successfully signed in user" };
   }
 
   // Call provider Database to create a user or check if one already exists.
 }
 
-export async function createClub(prevSate: unknown, formData: FormData){
-  return {success: true, message: "Success"};
+export async function createClub(prevSate: unknown, formData: FormData) {
+  return { success: true, message: "Success" };
 }

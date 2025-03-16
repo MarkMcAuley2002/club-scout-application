@@ -1,11 +1,9 @@
+'use client'
 import Link from "next/link";
 import React from "react";
 import ButtonLink from "./ButtonLink";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/lib/authOptions";
-import { signOut } from "next-auth/react";
 import SignOutButton from "./SignOutButton";
-import Button from "./Button";
+import { useSession } from "next-auth/react";
 
 interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -14,8 +12,8 @@ interface ButtonProps {
   className?: string;
 }
 
-const Navbar = async () => {
-  const session = await getServerSession(authOptions);
+const Navbar = () => {
+  const {data: session} = useSession();
   return (
     <div className="bg-zinc-100 py-2 fixed w-full z-10 border-b border-zinc-200">
       <div className="container flex items-center justify-between">

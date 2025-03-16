@@ -1,52 +1,14 @@
-'use client'
-import ClubCard, { ClubCardProps } from "../components/ClubCard";
-import Button from "@/components/Button";
-import { useEffect, useState } from "react";
+import ClubCardHolder from "@/components/home/ClubCardHolder";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./lib/authOptions";
 
-export default function Home() {
-  const [clubs, setClubs] = useState<ClubCardProps[]>([]);
-
-  useEffect(() => {
-    console.log("Fetching clubs...");
-    const fetchClubs = async () => {
-      try {
-        const response = await fetch("/api/clubs"); // This is where we fetch clubs from your API
-        console.log(response);
-        if (!response.ok) {
-          throw new Error("Error Retrieving Clubs");
-        }
-        const data = await response.json();
-        console.log("Clubs data:", data);
-        setClubs(data); // Set the clubs data here
-      } catch (error) {
-        console.error("Error fetching clubs:", error);
-      }
-    };
-
-    fetchClubs(); // Call fetchClubs as soon as the page loads
-  }, []); 
-
-  // Move all of this code.
-  let showModal = false;
-
-  const handleCreateClubClick = () =>{
-    showModal = true;
-  }
-
-  const handleCloseModal = () => {
-    showModal = false; // Simulate closing modal
-  };
-
-   const handleSubmitModal = () => {
-     // Placeholder for submit logic
-     console.log("Club submitted");
-     showModal = false; // Simulate closing modal after submission
-   };
+export default async function Home() {
+  const session = await getServerSession(authOptions);
 
   return (
-    <div className="grid grid-cols-[250px_1fr] min-h-screen pt-[60px]">
+    <div className="grid grid-cols-[250px_1fr] min-h-screen pt-[60px] w-full">
       {/* Sidebar (Navigation) */}
-      <aside className="bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800">
+      <aside className="bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800 w-full">
         <h2 className="text-xl font-bold mb-4">Menu</h2>
         <ul>
           <li>
@@ -61,7 +23,7 @@ export default function Home() {
         </ul>
       </aside>
       <main>
-        <section className="flex flex-col gap-4 w-full p-4 dark:bg-gray-800 bg-gray-50 rounded">
+        <section className="flex flex-col gap-4 w-full h-full p-4 dark:bg-gray-800 bg-gray-50 rounded">
           {/* Top Row: Flex container for checkboxes and search bar */}
           <div className="flex gap-4 w-full ">
             {/* Left: Checkboxes Container */}
@@ -95,25 +57,7 @@ export default function Home() {
           </div>
 
           {/* Bottom Row: Club Cards Container */}
-          <div className="bg-white p-4 rounded shadow dark:bg-gray-600">
-            <h2 className="font-bold mb-2">Join a Club</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {clubs.map((club) => (
-                <ClubCard
-                  imageUrl={club.imageUrl}
-                  clubName={club.clubName}
-                  description={club.description}
-                  tags={club.tags}
-                  key={club.key}
-                />
-              ))}
-            </div>
-            <div className="font-bold mb-2 flex justify-end">
-              <Button accent="create" >
-                Create a club
-              </Button>
-            </div>
-          </div>
+          <ClubCardHolder></ClubCardHolder>
         </section>
       </main>
     </div>

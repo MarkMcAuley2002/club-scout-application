@@ -11,10 +11,10 @@ export interface SignInFormData {
 }
 
 const SignInForm: React.FC = () => {
+  // Uses the sign in action defined in /actions/auth to create a session for the validated user
   const [state, action, pending] = useActionState(signin, undefined);
 
-
-  if(state){
+  if (state) {
     console.log(state.message);
   }
 

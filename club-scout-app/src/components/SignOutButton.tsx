@@ -15,7 +15,7 @@ const SignOutButton: React.FC = () => {
         redirect: true,
         callbackUrl: `${window.location.origin}/sign-in`
     });
-     
+    // Enable the button again, not really necessary as the component will not be rendered after the user is logged out.
     setLoading(false);
   };
 
