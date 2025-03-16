@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import ClubCard, { ClubCardProps } from "../ClubCard";
 import Button from "../Button";
 import { useSession } from "next-auth/react";
+import { createClub } from "@/app/actions/auth";
+import CreateClubModal from "../modal/CreateClubModal";
 
 const ClubCardHolder: React.FC = () => {
   const [clubs, setClubs] = useState<ClubCardProps[]>([]);
   const { data: session } = useSession();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     console.log("Fetching clubs...");
@@ -29,6 +32,10 @@ const ClubCardHolder: React.FC = () => {
     fetchClubs(); // Call fetchClubs as soon as the page loads
   }, []);
 
+  // Functions to handle modal visibility
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   return (
     <div className="bg-white p-4 rounded shadow dark:bg-gray-600 h-fit">
       <h2 className="font-bold mb-2 bg-sl">Join a Club</h2>
@@ -49,8 +56,15 @@ const ClubCardHolder: React.FC = () => {
       </div>
       {session?.user && (
         <div className="font-bold mb-2 mt-2 flex justify-end mr-7">
-          <Button accent="create">Create a club</Button>
+          <Button onClick={openModal} accent="create">
+            Create a club
+          </Button>
         </div>
+      )}
+      {isModalOpen && (
+        <CreateClubModal
+          onClose={closeModal}
+        ></CreateClubModal>
       )}
     </div>
   );

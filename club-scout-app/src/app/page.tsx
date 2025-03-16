@@ -11,6 +11,11 @@ export default async function Home() {
       <aside className="bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800 w-full">
         <h2 className="text-xl font-bold mb-4">Menu</h2>
         <ul>
+          {session?.user && (
+            <li>
+              <a href="/admin">Profile</a>
+            </li>
+          )}
           <li>
             <a href="#">Option 1</a>
           </li>
