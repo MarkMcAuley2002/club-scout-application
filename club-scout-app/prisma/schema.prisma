@@ -13,6 +13,12 @@ datasource db {
 // allow to request permission, show to owner and allow approval
 // if approved, update canPost: true.
 
+enum PostPermission {
+  BASE    // Default: cannot post
+  REQUESTED  // Has requested permission to post
+  FULL    // Granted permission to post
+}
+
 model User {
   id          Int          @id @default(autoincrement())
   email       String       @unique
@@ -50,7 +56,8 @@ model Membership {
   id      Int    @id @default(autoincrement())
   user_id Int
   club_id Int
-  role    String @default("member")
+  role    String @default("member") // Remove this
+  postPermission PostPermission @default(BASE)
   club    Club   @relation(fields: [club_id], references: [id])
   user    User   @relation(fields: [user_id], references: [id])
 

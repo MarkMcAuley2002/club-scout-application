@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { Event as ClubEvent } from "@prisma/client";
 import { useSession } from "next-auth/react";
 
 interface EventSectionProps {
   events?: EventData[];
+  canEdit?: boolean;
 }
 
 interface EventData {
@@ -13,7 +13,7 @@ interface EventData {
   details: string;
 }
 
-const EventSection: React.FC<EventSectionProps> = ({ events }) => {
+const EventSection: React.FC<EventSectionProps> = ({ events, canEdit }) => {
   const { data: session } = useSession();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);

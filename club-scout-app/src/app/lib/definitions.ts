@@ -88,7 +88,12 @@ export const newMembershipSchema = z.object({
   role: z.string(),
 });
 
-export const removeMembershipSchema = z.object({
+export const removeSelfMembershipSchema = z.object({
+  club_id: z.number(),
+});
+
+export const removeMemberSchema = z.object({
+  user_id: z.number(),
   club_id: z.number(),
 });
 

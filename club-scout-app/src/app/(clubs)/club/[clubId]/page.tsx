@@ -14,7 +14,7 @@ const ClubPage = async ({ params }: { params: { clubId: string } }) => {
   // https://nextjs.org/docs/messages/sync-dynamic-apis
   const resolvedParams = await Promise.resolve(params);
   const clubId = resolvedParams.clubId;
-
+  // reuse for admin profiles, get club owner by user, include memberships with user id, username and postPermission if it is requested.
   const club = await db.club.findUnique({
     where: {
       id: parseInt(clubId),
@@ -28,7 +28,11 @@ const ClubPage = async ({ params }: { params: { clubId: string } }) => {
         },
       },
       memberships: {
-        include: { user: { select: { username: true, id: true } } },
+        select: {
+          role: true,
+          postPermission: true,
+          user: { select: { username: true, id: true } },
+        },
       },
     },
   });
