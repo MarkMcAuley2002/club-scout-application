@@ -4,7 +4,6 @@ import React, { ChangeEvent, useRef, useState } from "react";
 import ButtonLink from "./ButtonLink";
 import SignOutButton from "./SignOutButton";
 import { useSession } from "next-auth/react";
-import ImageUpload from "./modal/ImageUpload";
 
 interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
@@ -14,15 +13,12 @@ interface ButtonProps {
 }
 
 const Navbar = () => {
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
-  const imageInputRef = useRef<HTMLInputElement>(null);
-
   const { data: session } = useSession();
 
   return (
     <div className="bg-zinc-100 py-2 fixed w-full z-10 border-b border-zinc-200">
       <div className="container flex items-center justify-between">
-        <ImageUpload onUpload={() => {}}></ImageUpload>
+       
         <Link href={"/"} passHref legacyBehavior>
           <ButtonLink text="Home"></ButtonLink>
         </Link>

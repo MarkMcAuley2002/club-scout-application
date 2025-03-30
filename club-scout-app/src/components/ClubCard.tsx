@@ -1,27 +1,85 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./Button";
+import { useSession } from "next-auth/react";
+import { Membership } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 export interface ClubCardProps {
-  imageUrl: string; // Replace with an actual image URL
+  id: number;
+  name: string;
+  clubImage: string;
   clubName: string;
   description: string;
   tags: string[];
-  key: number;
+  memberships: Membership[];
 }
 
 const ClubCard: React.FC<ClubCardProps> = ({
-  imageUrl,
+  id,
+  name,
+  clubImage,
   clubName,
   description,
   tags,
+  memberships,
 }: ClubCardProps) => {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const [joined, setJoined] = useState(false);
+
+  const handleJoinClub = async () => {
+    // Add the current user as a member to the club using their id
+    if (joined) {
+      router.push(`/club/${id}`);
+    } else {
+      if (session && session.user) {
+        const response = await fetch("/api/memberships/join", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            club_id: id,
+            user_id: parseInt(session.user.id),
+            role: "member",
+          }),
+        });
+
+        if (response.ok) {
+          setJoined(true);
+          router.push(`/club/${id}`);
+        } else {
+          console.log("Error joining club", response);
+        }
+      } else {
+        router.push("/sign-in");
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (session && session.user) {
+      // Check if the user is already a member of the club
+      const userMembership = memberships.find(
+        (member) => member.user_id.toString() === session.user.id
+      );
+      if (userMembership) {
+        setJoined(true);
+      }
+    }
+  }, []);
+
   return (
     <div className="p-4 rounded bg-gray-100 overflow-hidden w-full h-fit shadow-lg">
       <div className="flex">
         {/* Left: Profile Image */}
-        <div className="w-1/3">
-          <img src={imageUrl} alt="Club Image" className="w-full h-full" />
+        <div className="w-[10rem] h-[10rem] overflow-hidden">
+          <img
+            src={clubImage}
+            alt="Club Image"
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Right: Club Info */}
@@ -49,7 +107,9 @@ const ClubCard: React.FC<ClubCardProps> = ({
 
       {/* Join Button */}
       <div className="p-4 text-right">
-        <Button accent="join">Join</Button>
+        <Button accent={joined ? "navigate" : "join"} onClick={handleJoinClub}>
+          {session?.user ? (joined ? "View" : "Join") : "Sign in to join"}
+        </Button>
       </div>
     </div>
   );

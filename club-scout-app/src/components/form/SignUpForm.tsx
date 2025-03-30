@@ -2,7 +2,6 @@
 import { signup } from "@/app/actions/auth";
 import Link from "next/link";
 import React, { useActionState } from "react";
-import GoogleSignInButton from "../GoogleSignInButton";
 import { useRouter } from "next/navigation";
 
 export interface SignUpFormData {

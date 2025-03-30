@@ -1,33 +1,16 @@
 import ClubCardHolder from "@/components/home/ClubCardHolder";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./lib/authOptions";
+import FloatingMenu from "@/components/FloatingMenu";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="grid grid-cols-[250px_1fr] min-h-screen pt-[60px] w-full">
-      {/* Sidebar (Navigation) */}
-      <aside className="bg-gray-100 p-4 rounded-lg shadow-md dark:bg-gray-800 w-full">
-        <h2 className="text-xl font-bold mb-4">Menu</h2>
-        <ul>
-          {session?.user && (
-            <li>
-              <a href="/admin">Profile</a>
-            </li>
-          )}
-          <li>
-            <a href="#">Option 1</a>
-          </li>
-          <li>
-            <a href="#">Option 2</a>
-          </li>
-          <li>
-            <a href="#">Option 3</a>
-          </li>
-        </ul>
-      </aside>
-      <main>
+    <div className="min-h-screen pt-[60px] w-full relative">
+     
+      <FloatingMenu/>
+      <main className="w-full">
         <section className="flex flex-col gap-4 w-full h-full p-4 dark:bg-gray-800 bg-gray-50 rounded">
           {/* Top Row: Flex container for checkboxes and search bar */}
           <div className="flex gap-4 w-full ">

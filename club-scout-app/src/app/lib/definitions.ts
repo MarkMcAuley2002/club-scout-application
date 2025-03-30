@@ -1,4 +1,5 @@
-import z from "zod";
+import { title } from "process";
+import z, { date } from "zod";
 
 export const SignInFormSchema = z.object({
   email: z
@@ -50,7 +51,7 @@ export const SignUpFormSchema = z
     message: "Passwords do not match",
   });
 
-// Define a Schema for input validation 
+// Define a Schema for input validation
 export const NewUserSchema = z.object({
   username: z
     .string()
@@ -73,4 +74,32 @@ export const NewUserSchema = z.object({
       message: "Must contain at least one letter and one number",
     })
     .trim(),
+});
+
+export const newClubSchema = z.object({
+  name: z.string().nonempty({ message: "This field is required" }).trim(),
+  description: z.string().trim(),
+  tags: z.array(z.string()),
+  clubImage: z.string().trim(),
+});
+
+export const newMembershipSchema = z.object({
+  club_id: z.number(),
+  role: z.string(),
+});
+
+export const removeMembershipSchema = z.object({
+  club_id: z.number(),
+});
+
+export const newEventSchema = z.object({
+  title: z.string().trim(),
+  date: z
+    .string()
+    .refine((date) => new Date(date).toString() !== "Invalid Date", {
+      message: "A valid date is required",
+    })
+    .transform((date) => new Date(date)),
+  details: z.string(),
+  club_id: z.number(),
 });

@@ -1,28 +1,26 @@
 import { createClub } from "@/app/actions/auth";
 import React, { use, useActionState, useState } from "react";
-import ImageUpload from "./ImageUpload";
-import SelectTags from "./SelectTags";
 import { useRouter } from "next/navigation";
 
-interface ClubModalProps {
+interface EventModalProps {
   onClose: () => void;
 }
 
-export interface CreateClubFormData {
-  name: FormDataEntryValue | null;
-  description: FormDataEntryValue | null;
-  clubImageFile: FormDataEntryValue | null;
-  tags: FormDataEntryValue | null;
+export interface CreateEventFormData {
+  title: FormDataEntryValue | null;
+  date: FormDataEntryValue | null;
+  details: FormDataEntryValue | null;
+  club_id: FormDataEntryValue | null;
 }
 
-const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
+const EventModal: React.FC<EventModalProps> = ({ onClose }) => {
   const router = useRouter();
   const [state, action, pending] = useActionState(createClub, undefined);
 
   // Redirect if signup is successful
   React.useEffect(() => {
     if (state?.success) {
-      console.log("Club Created");
+      console.log("Event Created");
       // After club is created navigate with router to club page.
       onClose();
       if (state.club) {
@@ -34,44 +32,29 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold mb-4">Create a New Club</h2>
+        <h2 className="text-2xl font-bold mb-4">Add an Event</h2>
         <form action={action}>
           <div className="mb-4">
-            <label
-              className="block text-sm font-semibold mb-2"
-              htmlFor="clubName"
-            >
-              Club Penguin
+            <label className="block text-sm font-semibold mb-2" htmlFor="title">
+              Title
             </label>
             <input
               type="text"
-              name="clubName"
+              name="title"
               className="w-full p-2 border border-gray-300 rounded"
             />
           </div>
           <div className="mb-4">
             <label
               className="block text-sm font-semibold mb-2"
-              htmlFor="description"
+              htmlFor="details"
             >
-              Description
+              Details
             </label>
             <textarea
               className="w-full p-2 border border-gray-300 rounded"
-              name="description"
+              name="details"
             />
-          </div>
-          <div className="mb-4">
-            <SelectTags></SelectTags>
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-sm font-semibold mb-2"
-              htmlFor="clubCardImage"
-            >
-              Upload an Image to display your Club
-            </label>
-            <ImageUpload></ImageUpload>
           </div>
           <div className="flex justify-end gap-2">
             <button
@@ -86,7 +69,7 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded"
             >
-              {pending ? "Create Club" : "Create Club"}
+              {pending ? "Adding Event" : "Add Event"}
             </button>
           </div>
         </form>
@@ -95,4 +78,4 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
   );
 };
 
-export default CreateClubModal;
+export default EventModal;
