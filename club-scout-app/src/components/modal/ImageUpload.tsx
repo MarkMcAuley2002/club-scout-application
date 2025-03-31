@@ -1,7 +1,7 @@
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
-// More about hiddenInputRef for forms: 
+// More about hiddenInputRef for forms:
 // https://react-dropzone.js.org/#section-styling-dropzone
 
 // Define props for the component, explicitly typing the onUpload callback.
@@ -28,7 +28,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         "image/jpeg": [],
         "image/png": [],
       },
-      multiple: uploadMultiple
+      multiple: uploadMultiple,
     });
 
   const files = acceptedFiles.map((file) => (

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Predefined tags for selection
 const availableTags = [
@@ -12,7 +12,11 @@ const availableTags = [
   "Gaming",
 ];
 
-const SelectTags: React.FC = ({}) => {
+interface SelectTagsProps {
+  currentTags?: string[];
+}
+
+const SelectTags: React.FC<SelectTagsProps> = ({ currentTags }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [search, setSearch] = useState("");
@@ -34,6 +38,12 @@ const SelectTags: React.FC = ({}) => {
   const handleRemoveTag = (tag: string) => {
     onTagsChange(selectedTags.filter((selectedTag) => selectedTag !== tag));
   };
+
+  useEffect(() => {
+    if (currentTags) {
+      setSelectedTags(currentTags);
+    }
+  }, []);
 
   return (
     <div className="relative w-full">

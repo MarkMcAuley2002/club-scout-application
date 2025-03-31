@@ -3,11 +3,10 @@
 import { SignInFormSchema, SignUpFormSchema } from "../lib/definitions";
 import { SignUpFormData } from "@/components/form/SignUpForm";
 import { SignInFormData } from "@/components/form/SignInForm";
-import { getSession, signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { CreateClubFormData } from "@/components/modal/CreateClubModal";
 import { supabase } from "@/lib/supabaseClient";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../lib/authOptions";
+import { EditClubFormData } from "@/components/modal/EditClubModal";
 
 export async function signup(prevSate: unknown, formData: FormData) {
   const validateFormFields = SignInFormSchema.safeParse({
@@ -104,7 +103,7 @@ export async function createClub(prevSate: unknown, formData: FormData) {
     if (file) {
       const fileName = `${Date.now()}-${(file as File).name}`;
 
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from("club-card-images")
         .upload(fileName, file);
       if (error) {
@@ -149,5 +148,80 @@ export async function createClub(prevSate: unknown, formData: FormData) {
     }
   } catch (error) {
     return { success: false, message: "Club Scout: Server error", error };
+  }
+}
+
+export async function editClub(prevState: unknown, formData: FormData) {
+  console.log("Edit Club function called!", formData.get("club-tags"));
+
+  const rawTags = formData.get("club-tags") as string;
+  const tagsArray = rawTags ? JSON.parse(rawTags) : [];
+
+  const rawData: EditClubFormData = {
+    about: formData.get("about"),
+    description: formData.get("description"),
+    clubImageFile: formData.get("image-file"),
+    tags: tagsArray,
+    id: formData.get("id"),
+  };
+
+  const parsedId = rawData.id ? Number(rawData.id) : null;
+
+  const file = rawData.clubImageFile;
+  try {
+    const clubImageUrl = await uploadImage(file as File, "club-card-images");
+
+    const response = await fetch("/api/edit/club", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        about: rawData.about,
+        description: rawData.description,
+        tags: rawData.tags,
+        clubImage: clubImageUrl,
+        id: parsedId,
+      }),
+    });
+
+    if (!response.ok) {
+      return {
+        success: false,
+        message: "Club Scout: Failed to apply changes to the club",
+      };
+    }
+    return { success: true, message: "Changes Applied" };
+  } catch (error) {
+    return { success: false, message: "Club Scout: Server error", error };
+  }
+}
+
+async function uploadImage(file: File, uploadPath: string) {
+  let clubImageUrl: string | undefined;
+  try {
+    if (file.name) {
+      const fileName = `${Date.now()}-${file.name}`;
+
+      // Upload the image file to the database storage bucket
+      const { error } = await supabase.storage
+        .from(uploadPath)
+        .upload(fileName, file);
+      if (error) {
+        throw new Error("Error uploading image");
+      }
+      // retrieve the new url from storage and return it.
+      const { data: publicUrlData } = supabase.storage
+        .from(uploadPath)
+        .getPublicUrl(fileName);
+
+      clubImageUrl = publicUrlData.publicUrl;
+    } else {
+      clubImageUrl =
+        "https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png";
+    }
+    return clubImageUrl;
+  } catch (error) {
+    throw Error("Error uploading Image");
   }
 }

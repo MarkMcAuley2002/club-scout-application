@@ -83,6 +83,14 @@ export const newClubSchema = z.object({
   clubImage: z.string().trim(),
 });
 
+export const editClubSchema = z.object({
+  about: z.string().trim(),
+  description: z.string().trim(),
+  tags: z.array(z.string().trim()),
+  clubImage: z.string().trim(),
+  id: z.number(),
+});
+
 export const newMembershipSchema = z.object({
   club_id: z.number(),
   role: z.string(),

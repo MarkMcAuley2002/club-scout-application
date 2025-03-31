@@ -1,14 +1,13 @@
-"use client";
 import Link from "next/link";
 import React from "react";
-import ButtonLink from "./buttons/ButtonLink";
 import SignOutButton from "./buttons/SignOutButton";
-import { useSession } from "next-auth/react";
 import SignInButton from "./buttons/SignInButton";
 import SignUpButton from "./buttons/SignUpButton";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/lib/authOptions";
 
-const Navbar = () => {
-  const { data: session } = useSession();
+const Navbar = async () => {
+  const session = await getServerSession(authOptions);
 
   return (
     <div className="bg-zinc-100 fixed w-full z-10 border-b border-zinc-200 h-18 items-center">
@@ -18,7 +17,7 @@ const Navbar = () => {
         </Link>
         <div className="justify-between ">
           {session?.user ? (
-            <SignOutButton text="Sign Out"/>
+            <SignOutButton text="Sign Out" />
           ) : (
             <div className="flex items-center justify-between h-full">
               <SignInButton />

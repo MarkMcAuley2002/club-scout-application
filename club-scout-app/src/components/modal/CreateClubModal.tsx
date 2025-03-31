@@ -33,7 +33,7 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-[70vh] overflow-y-auto">
         <h2 className="text-2xl font-bold mb-4">Create a New Club</h2>
         <form action={action}>
           <div className="mb-4">
@@ -41,7 +41,7 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
               className="block text-sm font-semibold mb-2"
               htmlFor="clubName"
             >
-              Club Penguin
+              Club Name
             </label>
             <input
               type="text"
@@ -73,20 +73,20 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
             </label>
             <ImageUpload></ImageUpload>
           </div>
-          <div className="flex justify-end gap-2">
-            <button
-              onClick={onClose}
-              className="px-4 py-2 bg-gray-500 text-white rounded"
-              disabled={pending}
-            >
-              Cancel
-            </button>
+          <div className="flex justify-between gap-2">
             <button
               disabled={pending}
               type="submit"
               className="px-4 py-2 bg-blue-500 text-white rounded"
             >
               {pending ? "Create Club" : "Create Club"}
+            </button>
+            <button
+              onClick={onClose}
+              className="px-4 py-2 bg-gray-500 text-white rounded"
+              disabled={pending}
+            >
+              Cancel
             </button>
           </div>
         </form>
