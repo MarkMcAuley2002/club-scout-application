@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { Club, PostPermission, User } from "@prisma/client";
+import { Club, PostPermission, Profile, User } from "@prisma/client";
 import ImageSection from "./ImageSection";
 import EventSection from "./EventSection";
 import MembersSection from "./MembersSection";
@@ -15,7 +15,6 @@ export interface CurrentClubData {
   id: number;
 }
 
-// Props for club one including the club, events and memberships retrieved from the database.
 interface ClubProps extends Club {
   events: ClubEventData[];
   memberships: MemberDetails[];
@@ -28,9 +27,13 @@ interface ClubEventData {
 }
 
 export interface MemberDetails {
+  user: {
+    id: number;
+    username: string;
+    profile?: { profile_pic: string | null } | null;
+  };
   role: string;
   postPermission: PostPermission;
-  user: Pick<User, "id" | "username">;
 }
 
 interface ClubOneTemplateProps {

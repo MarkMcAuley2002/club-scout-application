@@ -86,7 +86,6 @@ const ClubCard: React.FC<ClubCardProps> = ({
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
             {name}
           </h3>
-          {/* Todo -> Update clubs so description has a max size. */}
           <p className="text-sm text-gray-600 dark:text-gray-300 my-2 max-h-[100px] overflow-x-hidden">
             {description}
           </p>

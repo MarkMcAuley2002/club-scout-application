@@ -31,11 +31,19 @@ const ClubPage = async ({ params }: { params: { clubId: string } }) => {
         select: {
           role: true,
           postPermission: true,
-          user: { select: { username: true, id: true } },
+          user: {
+            select: {
+              username: true,
+              id: true,
+              profile: { select: { profile_pic: true } },
+            },
+          },
         },
       },
     },
   });
+
+  console.log("Memberships", club?.memberships);
 
   if (!club || !club.events) {
     return notFound();

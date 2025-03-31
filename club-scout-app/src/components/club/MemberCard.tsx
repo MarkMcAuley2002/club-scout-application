@@ -43,9 +43,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
         <div className="flex">
           <div className="w-full h-full overflow-hidden relative flex">
             <img
-              src={
-                "https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742587637072-neilschmeal.png"
-              }
+              src={member.user.profile!.profile_pic!}
               alt="Club Image"
               className="w-[5rem] h-[5rem] object-cover"
             />
