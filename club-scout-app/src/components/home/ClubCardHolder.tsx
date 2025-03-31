@@ -41,9 +41,8 @@ const ClubCardHolder: React.FC = () => {
             clubs?.map((club) => (
               <div key={club.id}>
                 <ClubCard
-                  name={club.name}
                   clubImage={club.clubImage}
-                  clubName={club.clubName}
+                  name={club.name}
                   description={club.description}
                   tags={club.tags}
                   id={club.id}

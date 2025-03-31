@@ -2,14 +2,14 @@ import ClubCardHolder from "@/components/home/ClubCardHolder";
 import { getServerSession } from "next-auth";
 import { authOptions } from "./lib/authOptions";
 import FloatingMenu from "@/components/FloatingMenu";
+import Navbar from "@/components/Navbar";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
   return (
     <div className="min-h-screen pt-[60px] w-full relative">
-     
-      <FloatingMenu/>
+      <FloatingMenu />
       <main className="w-full">
         <section className="flex flex-col gap-4 w-full h-full p-4 dark:bg-gray-800 bg-gray-50 rounded">
           {/* Top Row: Flex container for checkboxes and search bar */}

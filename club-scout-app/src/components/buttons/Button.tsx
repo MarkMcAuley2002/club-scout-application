@@ -17,7 +17,7 @@ const Button: React.FC<ButtonProps> = ({
   ...props
 }: ButtonProps) => {
   const defaultStyle =
-    "px-4 rounded-xl font-medium border-solid border-2 text-center text-white min-w-20 max-w-25 min-h-9 max-h-9";
+    "px-4 rounded-xl font-medium border-solid border-2 text-center text-white min-w-20 max-w-fit min-h-9 max-h-9";
   const buttonAccept = {
     navigate:
       "bg-black border-solid border-2 border-bg-zinc-200 w-20 text-center text-white hover:bg-blue-300",

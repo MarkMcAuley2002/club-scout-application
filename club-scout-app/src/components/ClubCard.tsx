@@ -1,15 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Button from "./Button";
+import Button from "./buttons/Button";
 import { useSession } from "next-auth/react";
 import { Membership } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 export interface ClubCardProps {
   id: number;
-  name: string;
   clubImage: string;
-  clubName: string;
+  name: string;
   description: string;
   tags: string[];
   memberships: Membership[];
@@ -17,9 +16,8 @@ export interface ClubCardProps {
 
 const ClubCard: React.FC<ClubCardProps> = ({
   id,
-  name,
   clubImage,
-  clubName,
+  name,
   description,
   tags,
   memberships,
@@ -59,6 +57,7 @@ const ClubCard: React.FC<ClubCardProps> = ({
   };
 
   useEffect(() => {
+    console.log("MMA club name: ", name);
     if (session && session.user) {
       // Check if the user is already a member of the club
       const userMembership = memberships.find(
@@ -71,10 +70,10 @@ const ClubCard: React.FC<ClubCardProps> = ({
   }, []);
 
   return (
-    <div className="p-4 rounded bg-gray-100 overflow-hidden w-full h-fit shadow-lg">
+    <div className="p-4 rounded bg-gray-100 w-full h-fit shadow-lg">
       <div className="flex">
         {/* Left: Profile Image */}
-        <div className="w-[10rem] h-[10rem] overflow-hidden">
+        <div className="w-[10rem] h-[10rem] ">
           <img
             src={clubImage}
             alt="Club Image"
@@ -85,9 +84,10 @@ const ClubCard: React.FC<ClubCardProps> = ({
         {/* Right: Club Info */}
         <div className="w-2/3 p-4">
           <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-            {clubName}
+            {name}
           </h3>
-          <p className="text-sm text-gray-600 dark:text-gray-300 my-2">
+          {/* Todo -> Update clubs so description has a max size. */}
+          <p className="text-sm text-gray-600 dark:text-gray-300 my-2 max-h-[100px] overflow-x-hidden">
             {description}
           </p>
 
@@ -108,7 +108,7 @@ const ClubCard: React.FC<ClubCardProps> = ({
       {/* Join Button */}
       <div className="p-4 text-right">
         <Button accent={joined ? "navigate" : "join"} onClick={handleJoinClub}>
-          {session?.user ? (joined ? "View" : "Join") : "Sign in to join"}
+          {session?.user ? (joined ? "View" : "Join") : "Sign in"}
         </Button>
       </div>
     </div>

@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { Club } from "@prisma/client";
-import Button from "../Button";
+import Button from "../buttons/Button";
 import { useRouter } from "next/navigation";
 
 // Props for club one

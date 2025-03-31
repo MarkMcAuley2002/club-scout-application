@@ -13,6 +13,7 @@ import ImageSection from "./ImageSection";
 import EventSection from "./EventSection";
 import MembersSection from "./MembersSection";
 import { useEffect, useState } from "react";
+import FloatingMenu from "../FloatingMenu";
 
 // Props for club one including the club, events and memberships retrieved from the database.
 interface ClubProps extends Club {
@@ -77,11 +78,21 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
       <div className="flex justify-center backdrop-blur w-fit-content min-h-screen flex-col overflow-y-auto bg-scroll">
         <section className=" flex flex-col items-center justify-center min-h-screen px-4 text-white">
           <h1 className="text-4xl font-bold">About Us</h1>
-          <p className="mt-4 max-w-[600px] text-center">
+          <p className="mt-4 max-w-[600px] text-center text-balance">
             Within this article goes a large amount of text. I would like it to
             take up a certain amount of screen space before it goes to the next
-            line.
-            {club.events[0].details}
+            line. Within this article goes a large amount of text. I would like
+            it to take up a certain amount of screen space before it goes to the
+            next line. Within this article goes a large amount of text. I would
+            like it to take up a certain amount of screen space before it goes
+            to the next line. Within this article goes a large amount of text. I
+            would like it to take up a certain amount of screen space before it
+            goes to the next line. Within this article goes a large amount of
+            text. I would like it to take up a certain amount of screen space
+            before it goes to the next line. Within this article goes a large
+            amount of text. I would like it to take up a certain amount of
+            screen space before it goes to the next line. Todo Add Ability to
+            edit club
           </p>
         </section>
         <ImageSection />
@@ -100,6 +111,7 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
           />
         </div>
       </div>
+      <FloatingMenu/>
     </div>
   );
 };
