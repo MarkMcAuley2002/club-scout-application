@@ -6,11 +6,14 @@ import CreateClubButton from "./buttons/CreateClubButton";
 import ProfileNavButton from "./buttons/ProfileNavButton";
 import EditClubButton from "./buttons/EditClubButton";
 import { CurrentClubData } from "./club/ClubOne";
+import EditProfileButton from "./buttons/EditProfileButton";
+import { UserData } from "@/app/(dashboard)/profile/page";
 
 // Renders different Menu depending on the page the user is on.
 interface FloatingMenuProps {
-  menuType: "home" | "club";
+  menuType: "home" | "club" | "profile";
   clubData?: CurrentClubData;
+  userData?: UserData;
   canEditClub?: boolean;
   clubId?: number;
 }
@@ -18,6 +21,7 @@ interface FloatingMenuProps {
 const FloatingMenu: React.FC<FloatingMenuProps> = ({
   menuType,
   clubData,
+  userData,
   canEditClub = false,
   clubId,
 }) => {
@@ -39,7 +43,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
           </div>
         </div>
       );
-    } else {
+    } else if (menuType === "club") {
       return (
         <div className="fixed left-4 top-1/4 flex flex-col bg-slate-300 rounded-lg p-1 shadow-md bg-opacity-45 ">
           <div className="flex flex-col gap-4 w-fit h-fit relative">
@@ -49,6 +53,15 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
             )}
             <SignOutButton />
             {/* Add an option to upload an image if the user has permission to post */}
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className="fixed left-4 top-1/4 flex flex-col bg-slate-300 rounded-lg p-1 shadow-md bg-opacity-45 ">
+          <div className="flex flex-col gap-4 w-fit h-fit relative">
+            <EditProfileButton userData={userData!} />
+            <SignOutButton />
           </div>
         </div>
       );

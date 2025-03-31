@@ -116,3 +116,10 @@ export const newEventSchema = z.object({
   details: z.string(),
   club_id: z.number(),
 });
+
+export const editProfileSchema = z.object({
+  username: z.string().trim().nullable(),
+  bio: z.string().trim().nullable(),
+  profilePicture: z.string().trim().nullable(),
+  id: z.number(),
+});

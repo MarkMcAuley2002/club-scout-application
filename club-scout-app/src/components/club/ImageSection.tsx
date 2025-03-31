@@ -73,48 +73,6 @@ const ImageSection: React.FC = ({}) => {
             description=" And here is a description of the photo isn't it lovely? What
               happens if I keep going..."
           />
-          <ImageCardTextBottom
-            uploadedBy="markmcauley"
-            uploadDate="21st March 2025"
-            url="https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png"
-            description=" And here is a description of the photo isn't it lovely? What
-              happens if I keep going..."
-          />
-          <ImageCardTextBottom
-            uploadedBy="markmcauley"
-            uploadDate="21st March 2025"
-            url="https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png"
-            description=" And here is a description of the photo isn't it lovely? What
-              happens if I keep going..."
-          />
-          <ImageCardTextBottom
-            uploadedBy="markmcauley"
-            uploadDate="21st March 2025"
-            url="https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png"
-            description=" And here is a description of the photo isn't it lovely? What
-              happens if I keep going..."
-          />
-          <ImageCardTextBottom
-            uploadedBy="markmcauley"
-            uploadDate="21st March 2025"
-            url="https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png"
-            description=" And here is a description of the photo isn't it lovely? What
-              happens if I keep going..."
-          />
-          <ImageCardTextBottom
-            uploadedBy="markmcauley"
-            uploadDate="21st March 2025"
-            url="https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png"
-            description=" And here is a description of the photo isn't it lovely? What
-              happens if I keep going..."
-          />
-          <ImageCardTextBottom
-            uploadedBy="markmcauley"
-            uploadDate="21st March 2025"
-            url="https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png"
-            description=" And here is a description of the photo isn't it lovely? What
-              happens if I keep going..."
-          />
         </div>
         {/* Button to scroll images to the left */}
         <button

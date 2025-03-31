@@ -49,9 +49,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create the user
+    // Hash the user password
     const hashedPassword = await hash(password, 10);
-
+    // The transaction will fail if either the user or profile is not created.
     const newUser = await db.$transaction(async (prisma) => {
       const user = await prisma.user.create({
         data: {

@@ -40,7 +40,7 @@ const ClubPage = async ({ params }: { params: { clubId: string } }) => {
   if (!club || !club.events) {
     return notFound();
   } else {
-    // console.log("MMA EVENTS", club.events); 
+    // console.log("MMA EVENTS", club.events);
   }
 
   return (

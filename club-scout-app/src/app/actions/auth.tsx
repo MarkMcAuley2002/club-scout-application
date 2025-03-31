@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react";
 import { CreateClubFormData } from "@/components/modal/CreateClubModal";
 import { supabase } from "@/lib/supabaseClient";
 import { EditClubFormData } from "@/components/modal/EditClubModal";
+import { EditProfileFormData } from "@/components/modal/EditProfileModal";
 
 export async function signup(prevSate: unknown, formData: FormData) {
   const validateFormFields = SignInFormSchema.safeParse({
@@ -71,11 +72,11 @@ export async function signin(prevSate: unknown, formData: FormData) {
     };
   }
 
-  // Call sign in with user credentials to authenticate the user session, then navigate to /admin
+  // Call sign in with user credentials to authenticate the user session, then navigate to /profile
   const signInData = await signIn("credentials", {
     email: rawData.email,
     password: rawData.password,
-    callbackUrl: "/admin",
+    callbackUrl: "/profile",
   });
   if (signInData?.error) {
     console.log(signInData.error);
@@ -169,7 +170,7 @@ export async function editClub(prevState: unknown, formData: FormData) {
 
   const file = rawData.clubImageFile;
   try {
-    const clubImageUrl = await uploadImage(file as File, "club-card-images");
+    const clubImageUrl = await uploadImage("club-card-images", file as File);
 
     const response = await fetch("/api/edit/club", {
       method: "PATCH",
@@ -197,10 +198,53 @@ export async function editClub(prevState: unknown, formData: FormData) {
   }
 }
 
-async function uploadImage(file: File, uploadPath: string) {
-  let clubImageUrl: string | undefined;
+export async function editProfile(prevState: unknown, formData: FormData) {
+  const rawData: EditProfileFormData = {
+    username: formData.get("username"),
+    bio: formData.get("bio"),
+    profilePicture: formData.get("image-file"),
+    profilePictureUrl: formData.get("profile-pic-url"),
+    userId: formData.get("id"),
+  };
+
+  const parsedId = rawData.userId ? Number(rawData.userId) : null;
+
   try {
-    if (file.name) {
+    const file = rawData.profilePicture;
+    const profileImageUrl = await uploadImage(
+      "profile-pictures",
+      file as File,
+      rawData.profilePictureUrl?.toString()
+    );
+
+    const response = await fetch("/api/edit/profile", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: rawData.username,
+        bio: rawData.bio,
+        profilePicture: profileImageUrl,
+        id: parsedId,
+      }),
+    });
+
+    const data = await response.json();
+    return { success: true, message: "Changes Applied", user: data.user };
+  } catch (error) {
+    return { success: false, message: "Club Scout: Server error", error };
+  }
+}
+
+async function uploadImage(
+  uploadPath: string,
+  file?: File,
+  currentImage?: string
+) {
+  let imageUrl: string | undefined;
+  try {
+    if (file?.name) {
       const fileName = `${Date.now()}-${file.name}`;
 
       // Upload the image file to the database storage bucket
@@ -215,12 +259,14 @@ async function uploadImage(file: File, uploadPath: string) {
         .from(uploadPath)
         .getPublicUrl(fileName);
 
-      clubImageUrl = publicUrlData.publicUrl;
+      imageUrl = publicUrlData.publicUrl;
+    } else if (currentImage) {
+      imageUrl = currentImage;
     } else {
-      clubImageUrl =
+      imageUrl =
         "https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png";
     }
-    return clubImageUrl;
+    return imageUrl;
   } catch (error) {
     throw Error("Error uploading Image");
   }
