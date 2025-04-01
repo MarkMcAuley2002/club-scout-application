@@ -4,7 +4,7 @@ import { db } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export async function DELETE(request: Request) {
+export async function PATCH(request: Request) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -22,24 +22,26 @@ export async function DELETE(request: Request) {
     const body = await request.json();
     const { user_id, club_id } = editMemberSchema.parse(body);
 
-    const response = await db.membership.delete({
+    const response = await db.membership.update({
       where: {
         user_id_club_id: {
           user_id: user_id,
           club_id,
         },
       },
+      data: {
+        postPermission: "REQUESTED",
+      },
     });
 
     return NextResponse.json(
-      { message: `member removed from the club ${response}` },
+      { message: `Permission requested ${response}` },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
       {
-        message:
-          "Something went wrong while attempting to remove the member from the club",
+        message: "Something went wrong while update the users post permission",
         error: error,
       },
       { status: 500 }

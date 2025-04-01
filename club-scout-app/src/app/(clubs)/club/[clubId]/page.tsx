@@ -52,7 +52,7 @@ const ClubPage = async ({ params }: { params: { clubId: string } }) => {
   }
 
   return (
-    <div className="flex  bg-purple-300 w-full h-full mt-10">
+    <div className="flex w-full h-full mt-10">
       <ClubOneTemplate club={club} />
     </div>
   );

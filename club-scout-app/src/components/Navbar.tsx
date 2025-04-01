@@ -10,7 +10,7 @@ const Navbar = async () => {
   const session = await getServerSession(authOptions);
 
   return (
-    <div className="bg-blue-500 fixed w-full z-10 border-b border-zinc-200 h-20 items-center">
+    <div className="bg-blue-500 fixed w-full z-10 shadow-sm shadow-blue-300 h-20 items-center">
       <div className="container flex items-center justify-between h-full">
         <Link href="/" className="flex items-center ml-0 ">
           <img

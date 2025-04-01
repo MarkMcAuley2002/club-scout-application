@@ -26,11 +26,11 @@ const ClubCardHolder: React.FC = () => {
     };
 
     fetchClubs(); // Call fetchClubs as soon as the page renders
-  }, []);
+  }, []); // [] tells it to run when the page renders, [anydata] will watch for changes in anydata
 
   return (
     <div className="bg-white p-4 rounded shadow dark:bg-gray-600 h-fit">
-      <h2 className="font-bold mb-2 bg-sl">Join a Club</h2>
+      <h2 className="font-bold mb-2 bg-sl">Find a Club for You!</h2>
       <div className="flex-1 overflow-y-auto md:h-[300px] lg:h-[500px] bg-green-50 mb-2">
         <div className="grid lg:grid-cols-2 sm:grid-cols-1 gap-3 grow h-full p-2 pr-4 mb-1">
           {loading ? (
