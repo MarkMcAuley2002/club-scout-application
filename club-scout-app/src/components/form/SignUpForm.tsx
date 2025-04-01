@@ -23,7 +23,7 @@ const SignUpForm: React.FC = () => {
   }, [state, router]);
 
   return (
-    <div className="bg-gray-100 shadow-md rounded-md p-5">
+    <div className="bg-gray-100 shadow-md rounded-md p-5 ">
       <h2 className="text-xl font-semibold text-center mb-2">Sign Up</h2>
       <form action={action}>
         <div className="">

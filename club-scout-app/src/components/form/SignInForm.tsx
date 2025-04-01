@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useActionState } from "react";
-import { signin, signup } from "@/app/actions/auth";
+import { signin } from "@/app/actions/auth";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export interface SignInFormData {
   email?: FormDataEntryValue | null;

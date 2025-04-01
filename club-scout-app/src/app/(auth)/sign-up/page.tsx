@@ -1,11 +1,11 @@
 import SignUpForm from "@/components/form/SignUpForm";
 
-const page = () =>{
-    return (
-      <div className="w-full rounded-md bg-white flex justify-start mt-10">
-        <SignUpForm />
-      </div>
-    );
-}
+const page = () => {
+  return (
+    <div className="m-20">
+      <SignUpForm />
+    </div>
+  );
+};
 
-export default page; 
+export default page;
