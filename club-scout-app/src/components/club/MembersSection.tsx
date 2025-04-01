@@ -26,26 +26,6 @@ const MembersSection: React.FC<MembersSectionProps> = ({
     scrollContainerRef.current?.scrollBy({ top: 200, behavior: "smooth" });
   };
 
-  const handleRemoveMember = async (member_id: number) => {
-    try {
-      const response = await fetch("/api/memberships/remove", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          user_id: member_id,
-          club_id: clubId,
-        }),
-      });
-
-      if (!response.ok) {
-        console.log("Error removing member from the club", response);
-      } else {
-      }
-    } catch (error) {}
-  };
-
   useEffect(() => {
     console.log("MMA member details", memberDetails);
   }, []);

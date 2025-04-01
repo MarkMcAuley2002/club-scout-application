@@ -21,6 +21,25 @@ const ProfileClubSection: React.FC<ProfileClubSectionProps> = ({
     scrollContainerRef.current?.scrollBy({ top: 200, behavior: "smooth" });
   };
 
+  const handleLeaveClub = async (clubId: number) => {
+    try {
+      const response = await fetch("/api/memberships/leave", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          club_id: clubId,
+        }),
+      });
+
+      if (!response.ok) {
+        console.log("Error leaving the club", response);
+      } else {
+      }
+    } catch (error) {}
+  };
+
   return (
     <div className=" w-1/2 h-full  p-4 rounded-sm shadow-md flex flex-col bg-green-50">
       <h3 className="text-lg font-bold mb-2">
@@ -43,6 +62,9 @@ const ProfileClubSection: React.FC<ProfileClubSectionProps> = ({
                     tags={club.tags}
                     id={club.id}
                     type="basic"
+                    onClick={
+                      clubOwner ? undefined : () => handleLeaveClub(club.id)
+                    }
                   />
                 </div>
               ))}

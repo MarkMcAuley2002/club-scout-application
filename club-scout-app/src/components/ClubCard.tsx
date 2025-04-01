@@ -4,6 +4,7 @@ import Button from "./buttons/Button";
 import { useSession } from "next-auth/react";
 import { Membership } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import LeaveClubButton from "./buttons/LeaveClubButton";
 
 export interface ClubCardProps {
   id: number;
@@ -13,6 +14,7 @@ export interface ClubCardProps {
   tags: string[];
   memberships?: Membership[];
   type?: "full" | "basic";
+  onClick?: () => void;
 }
 
 const ClubCard: React.FC<ClubCardProps> = ({
@@ -23,6 +25,7 @@ const ClubCard: React.FC<ClubCardProps> = ({
   tags,
   memberships,
   type = "full",
+  onClick,
 }: ClubCardProps) => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -75,21 +78,25 @@ const ClubCard: React.FC<ClubCardProps> = ({
   // the rest is not necessary as the user has already decided to join the club.
   if (type === "basic") {
     return (
-      <div
-        className="p-2 rounded bg-gray-100 shadow-md flex items-center cursor-pointer hover:bg-gray-200 transition"
-        onClick={() => router.push(`/club/${id}`)}
-      >
-        {/* Rounded to match the profile picture */}
-        <div className="w-[3rem] h-[3rem] rounded-full overflow-hidden">
-          <img
-            src={clubImage}
-            alt="Club Image"
-            className="w-full h-full object-cover"
-          />
-        </div>
+      <div className="p-2 rounded bg-gray-100 shadow-md flex items-center cursor-pointer hover:bg-gray-200 transition relative">
+        <div onClick={() => router.push(`/club/${id}`)}>
+          {/* Rounded to match the profile picture */}
+          <div className="w-[3rem] h-[3rem] rounded-full overflow-hidden">
+            <img
+              src={clubImage}
+              alt="Club Image"
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-        {/* Club Name is positioned on the right of the image */}
-        <h3 className="ml-3 text-lg font-semibold text-gray-900">{name}</h3>
+          {/* Club Name is positioned on the right of the image */}
+          <h3 className="ml-3 text-lg font-semibold text-gray-900">{name}</h3>
+        </div>
+        {onClick && (
+          <div className=" absolute  right-0 m-2">
+            <LeaveClubButton onClick={onClick} />
+          </div>
+        )}
       </div>
     );
   }

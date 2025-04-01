@@ -22,7 +22,7 @@ export default async function Home() {
           </div>
 
           {/*Search Bar Container */}
-          <div className="bg-white p-4 rounded shadow w-full sm:w-1/2 md:w-1/3 mx-auto dark:bg-gray-600 justify-start">
+          <div className="bg-white p-4 rounded shadow w-full sm:w-1/2 md:w-1/3 mx-auto dark:bg-gray-600">
             <h2 className="font-bold mb-2">Search for Clubs</h2>
             <input
               type="text"

@@ -1,15 +1,10 @@
 import { authOptions } from "@/app/lib/authOptions";
-import {
-  removeSelfMembershipSchema,
-} from "@/app/lib/definitions";
+import { removeSelfMembershipSchema } from "@/app/lib/definitions";
 import { db } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-// This endpoint will be used to create a club
 export async function DELETE(request: Request) {
-  // Get the route
-
   try {
     const session = await getServerSession(authOptions);
 
@@ -17,7 +12,8 @@ export async function DELETE(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = parseInt(session?.user.id);
+    // session returns a string instead of the number we need
+    const parsedUserId = parseInt(session.user.id);
 
     if (!request.body) {
       return NextResponse.json(
@@ -32,7 +28,7 @@ export async function DELETE(request: Request) {
     const response = await db.membership.delete({
       where: {
         user_id_club_id: {
-          user_id: userId,
+          user_id: parsedUserId,
           club_id,
         },
       },
