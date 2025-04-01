@@ -75,11 +75,7 @@ export async function PATCH(request: Request) {
           : undefined,
         profile: {
           update: {
-            bio: bio
-              ? bio !== existingUser.profile?.bio
-                ? bio
-                : undefined
-              : undefined,
+            bio: bio ?? undefined,
             profile_pic: profilePicture
               ? profilePicture !== existingUser.profile?.profile_pic
                 ? profilePicture

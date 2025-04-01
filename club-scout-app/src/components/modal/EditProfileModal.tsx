@@ -25,12 +25,13 @@ const EditClubModal: React.FC<ProfileModalProps> = ({ onClose, userData }) => {
   const [bio, setBio] = useState(userData.bio);
 
   React.useEffect(() => {
+    console.log("mma bio: ", bio);
     if (state?.success) {
       console.log("Profile Updated", state.user);
       router.refresh();
       onClose();
     }
-  }, [state, router]);
+  }, [state, router, bio]);
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -59,15 +60,12 @@ const EditClubModal: React.FC<ProfileModalProps> = ({ onClose, userData }) => {
           </div>
 
           <div className="mb-4">
-            <label
-              className="block text-sm font-semibold mb-2"
-              htmlFor="description"
-            >
+            <label className="block text-sm font-semibold mb-2" htmlFor="bio">
               Bio
             </label>
             <textarea
               className="w-full p-2 border border-gray-300 rounded"
-              name="description"
+              name="bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
             />
