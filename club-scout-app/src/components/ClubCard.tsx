@@ -11,7 +11,8 @@ export interface ClubCardProps {
   name: string;
   description: string;
   tags: string[];
-  memberships: Membership[];
+  memberships?: Membership[];
+  type?: "full" | "basic";
 }
 
 const ClubCard: React.FC<ClubCardProps> = ({
@@ -21,6 +22,7 @@ const ClubCard: React.FC<ClubCardProps> = ({
   description,
   tags,
   memberships,
+  type = "full",
 }: ClubCardProps) => {
   const router = useRouter();
   const { data: session } = useSession();
@@ -60,7 +62,7 @@ const ClubCard: React.FC<ClubCardProps> = ({
     console.log("MMA club name: ", name);
     if (session && session.user) {
       // Check if the user is already a member of the club
-      const userMembership = memberships.find(
+      const userMembership = memberships?.find(
         (member) => member.user_id.toString() === session.user.id
       );
       if (userMembership) {
@@ -68,6 +70,29 @@ const ClubCard: React.FC<ClubCardProps> = ({
       }
     }
   }, []);
+
+  // This is the club card for the profile, smaller and only includes the name and image,
+  // the rest is not necessary as the user has already decided to join the club.
+  if (type === "basic") {
+    return (
+      <div
+        className="p-2 rounded bg-gray-100 shadow-md flex items-center cursor-pointer hover:bg-gray-200 transition"
+        onClick={() => router.push(`/club/${id}`)}
+      >
+        {/* Rounded to match the profile picture */}
+        <div className="w-[3rem] h-[3rem] rounded-full overflow-hidden">
+          <img
+            src={clubImage}
+            alt="Club Image"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Club Name is positioned on the right of the image */}
+        <h3 className="ml-3 text-lg font-semibold text-gray-900">{name}</h3>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 rounded bg-gray-100 w-full h-fit shadow-lg">

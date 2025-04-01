@@ -1,5 +1,6 @@
 import { authOptions } from "@/app/lib/authOptions";
 import FloatingMenu from "@/components/FloatingMenu";
+import ProfileClubSection from "@/components/profile/ProfileClubSection";
 import { db } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 
@@ -37,12 +38,16 @@ const page = async () => {
     },
   });
 
-  const clubsJoined = user?.memberships.filter((m) => m.role !== "admin");
-  const clubsOwned = user?.memberships.filter((m) => m.role === "admin");
+  const clubsJoined = user?.memberships
+    .filter((membership) => membership.role !== "admin")
+    .map((membership) => membership.club);
+  const clubsOwned = user?.memberships
+    .filter((membership) => membership.role === "admin")
+    .map((membership) => membership.club);
 
   if (user?.profile) {
     return (
-      <div className="flex h-screen p-6 ml-0 w-screen mt-10 gap-7">
+      <div className="flex h-screen p-6 ml-0 w-screen mt-10 gap-7 bg-inherit">
         {/* Left Section: Profile Info */}
         <div className="w-1/4 bg-blue-50 p-6 rounded-lg shadow-lg">
           <div className="flex flex-col items-center">
@@ -68,41 +73,18 @@ const page = async () => {
         </div>
 
         {/* Right Section: Main Content */}
-        <div className="w-3/4 bg-blue-50 p-6 rounded-lg shadow-lg ">
-          <h2 className="text-2xl font-semibold">My Clubs</h2>
-          <div className="flex p-1 gap-2 h-full">
-            {/* Clubs the user has joined */}
-            <div className="bg-red-300 w-1/2 h-full p-4 ">
-              <h3 className="text-lg font-bold">Clubs I Have Joined</h3>
-              {clubsJoined!.length > 0 ? (
-                <ul className="mt-2 space-y-2">
-                  {clubsJoined!.map(({ club }) => (
-                    <li key={club.id} className="p-2 bg-white rounded shadow">
-                      {club.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-2 text-gray-700">
-                  You haven't joined any clubs.
-                </p>
-              )}
-            </div>
+        <div className="w-3/4 bg-blue-50  rounded-lg shadow-lg p-4 ">
+          <div className="flex gap-2 h-full ">
             {/* Clubs the user owns */}
-            <div className="bg-yellow-100 w-1/2 h-full p-4 ">
-              <h3 className="text-lg font-bold">Clubs I Own</h3>
-              {clubsOwned!.length > 0 ? (
-                <ul className="mt-2 space-y-2">
-                  {clubsOwned!.map(({ club }) => (
-                    <li key={club.id} className="p-2 bg-white rounded shadow">
-                      {club.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-2 text-gray-700">You don't own any clubs.</p>
-              )}
-            </div>
+            <ProfileClubSection
+              clubs={clubsOwned ? clubsOwned : []}
+              clubOwner={true}
+            />
+            {/* Clubs the user has joined */}
+            <ProfileClubSection
+              clubOwner={false}
+              clubs={clubsJoined ? clubsJoined : []}
+            />
           </div>
         </div>
         <FloatingMenu

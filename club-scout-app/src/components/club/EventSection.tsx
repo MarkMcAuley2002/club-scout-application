@@ -17,6 +17,7 @@ const EventSection: React.FC<EventSectionProps> = ({ events, canEdit }) => {
   const { data: session } = useSession();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const handleScrollUp = () => {
     scrollContainerRef.current?.scrollBy({ top: -200, behavior: "smooth" });
   };
