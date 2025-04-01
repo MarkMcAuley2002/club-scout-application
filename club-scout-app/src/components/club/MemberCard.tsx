@@ -1,5 +1,6 @@
 "use client";
 
+import RemoveMemberButton from "../buttons/RemoveMemberButton";
 import { MemberDetails } from "./ClubOne";
 import React from "react";
 
@@ -56,11 +57,8 @@ const MemberCard: React.FC<MemberCardProps> = ({
               </h3>
             </div>
             {canRemoveMember && (
-              <div
-                className="text-center relative h-fit bg-red-500 rounded-sm p-1 ml-20"
-                onClick={handleRemoveMember}
-              >
-                X
+              <div className=" absolute top-0 right-0 m-2">
+                <RemoveMemberButton onClick={handleRemoveMember} />
               </div>
             )}
           </div>

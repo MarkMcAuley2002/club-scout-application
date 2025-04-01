@@ -1,6 +1,5 @@
 "use client";
 import { useRef } from "react";
-import ImageCardTextBottom from "./ImageCardTextBottom";
 import ImageCardTextCenter from "./ImageCardTextCenter";
 
 const ImageSection: React.FC = ({}) => {
@@ -17,7 +16,7 @@ const ImageSection: React.FC = ({}) => {
   return (
     <div className=" justify-start border-gray-500">
       <h1 className="text-3xl justify-center flex text-white m-3 mb-5">
-        Club Photos
+        Club Images
       </h1>
       <div className="relative  m-3">
         <div
