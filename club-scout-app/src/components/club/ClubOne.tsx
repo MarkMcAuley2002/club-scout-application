@@ -30,7 +30,7 @@ export interface MemberDetails {
   user: {
     id: number;
     username: string;
-    profile?: { profile_pic: string | null } | null;
+    profile?: { profile_pic: string | null; bio: string | null } | null;
   };
   role: string;
   postPermission: PostPermission;
@@ -53,6 +53,7 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
   useEffect(() => {
     if (club.createdBy.toString() === session?.user.id) {
       setOwner(true);
+      setPermissionStatus(PostPermission.FULL); // Don't let the owner accidentally change their own permission to requested
       setEditPermission(true);
     }
     if (club.memberships) {

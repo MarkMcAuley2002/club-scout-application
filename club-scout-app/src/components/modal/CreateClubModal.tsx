@@ -33,7 +33,7 @@ const CreateClubModal: React.FC<ClubModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-[70vh] overflow-y-auto">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 h-[70vh] overflow-y-auto text-black">
         <h2 className="text-2xl font-bold mb-4">Create a New Club</h2>
         <form action={action}>
           <div className="mb-4">

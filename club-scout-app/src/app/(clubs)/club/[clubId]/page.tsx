@@ -28,7 +28,7 @@ const ClubPage = async ({ params }: { params: { clubId: string } }) => {
             select: {
               username: true,
               id: true,
-              profile: { select: { profile_pic: true } },
+              profile: { select: { profile_pic: true, bio: true } },
             },
           },
         },

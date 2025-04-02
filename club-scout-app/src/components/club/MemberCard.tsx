@@ -1,20 +1,30 @@
 "use client";
 
 import RemoveMemberButton from "../buttons/RemoveMemberButton";
+import ShowUserInfoModal from "../modal/ShowUserInfoModal";
 import { MemberDetails } from "./ClubOne";
-import React from "react";
+import React, { useState } from "react";
 
 interface MemberCardProps {
   canRemoveMember: boolean;
   member: MemberDetails;
   clubId: number;
+  viewedByOwner?: boolean;
+  onClick: () => void;
 }
 
 const MemberCard: React.FC<MemberCardProps> = ({
   canRemoveMember,
+  viewedByOwner = true,
   member,
   clubId,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Functions to handle modal visibility
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const handleRemoveMember = async () => {
     try {
       const response = await fetch("/api/memberships/remove", {
@@ -40,7 +50,10 @@ const MemberCard: React.FC<MemberCardProps> = ({
       className="space-y-4 justify-self-center bg-opacity-50 w-[20rem] mb-3"
       key={member.user.id}
     >
-      <div className="p-4 rounded bg-gray-100 overflow-hidden w-full h-[7rem] shadow-lg">
+      <div
+        onClick={openModal}
+        className="p-4 rounded bg-gray-100 overflow-hidden w-full h-[7rem] shadow-lg"
+      >
         <div className="flex">
           <div className="w-full h-full overflow-hidden relative flex">
             <img
@@ -64,6 +77,17 @@ const MemberCard: React.FC<MemberCardProps> = ({
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed left-4 top-1/4 flex flex-col bg-green-500 rounded-lg p-1 shadow-md bg-opacity-60 ">
+          <div className="flex flex-col gap-4 w-fit h-fit relative">
+            <ShowUserInfoModal
+              onClose={closeModal}
+              member={member}
+              viewdByOwner={viewedByOwner}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

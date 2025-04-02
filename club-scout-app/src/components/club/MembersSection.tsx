@@ -41,6 +41,7 @@ const MembersSection: React.FC<MembersSectionProps> = ({
           {memberDetails.map((member) => (
             <div key={member.user.id}>
               <MemberCard
+                onClick={() => {}} //todo
                 member={member}
                 canRemoveMember={canRemoveMembers && userId !== member.user.id}
                 clubId={clubId}
