@@ -100,14 +100,20 @@ export const removeSelfMembershipSchema = z.object({
   club_id: z.number(),
 });
 
-export const removeMemberSchema = z.object({
+export const editMemberSchema = z.object({
   user_id: z.number(),
   club_id: z.number(),
 });
 
+export const postRequestSchema = z.object({
+  user_id: z.number(),
+  club_id: z.number(),
+  approve: z.boolean(),
+});
+
 export const requestPostPermissionSchema = z.object({
   club_id: z.number(),
-})
+});
 
 export const newEventSchema = z.object({
   title: z.string().trim(),

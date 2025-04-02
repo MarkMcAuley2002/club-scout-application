@@ -8,6 +8,7 @@ interface MembersSectionProps {
   memberDetails: MemberDetails[];
   clubId: number;
   userId: number;
+  viewedByOwner: boolean;
 }
 
 const MembersSection: React.FC<MembersSectionProps> = ({
@@ -15,6 +16,7 @@ const MembersSection: React.FC<MembersSectionProps> = ({
   memberDetails,
   clubId,
   userId,
+  viewedByOwner,
 }) => {
   // .toDateString()
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -45,6 +47,7 @@ const MembersSection: React.FC<MembersSectionProps> = ({
                 member={member}
                 canRemoveMember={canRemoveMembers && userId !== member.user.id}
                 clubId={clubId}
+                viewedByOwner={viewedByOwner}
               />
             </div>
           ))}

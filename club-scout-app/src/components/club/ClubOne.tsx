@@ -89,6 +89,7 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
           />
           <MembersSection
             canRemoveMembers={isOwner}
+            viewedByOwner={isOwner} // Alternatively, just use canRemoveMembers, this is more clear.
             memberDetails={club.memberships}
             clubId={club.id}
             // session! means we will get the session and removes the <type> | undefined.

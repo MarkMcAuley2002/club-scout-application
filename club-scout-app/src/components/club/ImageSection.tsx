@@ -150,6 +150,14 @@ const ImageSection: React.FC<ImageSectionProps> = ({
           </p>
         </div>
       )}
+      {permissionStatus === PostPermission.FULL && (
+        <div className="mt-2 text-center">
+          <p className="text-white text-lg">
+            Got a good pic? Create a post by clicking the image icon on the
+            floating menu.
+          </p>
+        </div>
+      )}
     </div>
   );
 };

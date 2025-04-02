@@ -1,10 +1,11 @@
 import { authOptions } from "@/app/lib/authOptions";
-import { editMemberSchema } from "@/app/lib/definitions";
+import { postRequestSchema } from "@/app/lib/definitions";
 import { db } from "@/lib/prisma";
+import { PostPermission } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
-export async function DELETE(request: Request) {
+export async function PATCH(request: Request) {
   try {
     const session = await getServerSession(authOptions);
 
@@ -18,28 +19,30 @@ export async function DELETE(request: Request) {
         { status: 400 }
       );
     }
-
     const body = await request.json();
-    const { user_id, club_id } = editMemberSchema.parse(body);
-
-    const response = await db.membership.delete({
+    const { user_id, club_id, approve } = postRequestSchema.parse(body);
+    const postPermission = approve ? PostPermission.FULL : PostPermission.BASE;
+    const response = await db.membership.update({
       where: {
         user_id_club_id: {
-          user_id: user_id,
+          user_id,
           club_id,
         },
+      },
+      data: {
+        postPermission,
       },
     });
 
     return NextResponse.json(
-      { message: `member removed from the club ${response}` },
+      { message: `Operation Successful ${response}` },
       { status: 201 }
     );
   } catch (error) {
     return NextResponse.json(
       {
         message:
-          "Something went wrong while attempting to remove the member from the club",
+          "Something went wrong while updating the users post permission",
         error: error,
       },
       { status: 500 }

@@ -7,16 +7,40 @@ interface ShowUserInfoModalProps {
   onClose: () => void;
   member: MemberDetails;
   viewdByOwner: boolean;
+  club_id: number;
 }
 
 const ShowUserInfoModal: React.FC<ShowUserInfoModalProps> = ({
   onClose,
   member,
   viewdByOwner,
+  club_id,
 }) => {
-  React.useEffect(() => {
-    console.log("MMA OPENED MODAL ", member.user);
-  });
+  const handlePostRequest = async (approve: boolean) => {
+    try {
+      if (!viewdByOwner) {
+        throw Error("Unauthorized User");
+      }
+
+      const response = await fetch("/api/memberships/updatePostPermission", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user_id: member.user.id,
+          club_id: club_id,
+          approve,
+        }),
+      });
+
+      if (!response.ok) {
+        throw Error("Failed to update users post request status");
+      }
+    } catch (error) {
+      console.log("Error handling post request: ", error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -34,18 +58,26 @@ const ShowUserInfoModal: React.FC<ShowUserInfoModalProps> = ({
           />
           {/* Username */}
           <h2 className="mt-4 text-xl font-bold">{member.user.username}</h2>
+          {/* This section is for the club owner's eyes only */}
           {viewdByOwner &&
             member.postPermission === PostPermission.REQUESTED && (
               <>
                 <p className="mt-4 text-sm text-gray-700 text-center">
                   This user has requested permission to post to the club,
-                  confirm or deny the request below
+                  approve or deny the request below
                 </p>
+                {/* As nice as icons are I don't want any ambiguity as to what clicking either of the buttons does*/}
                 <div className="mt-4 flex justify-center gap-4">
-                  <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+                  <button
+                    className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 "
+                    onClick={() => handlePostRequest(true)}
+                  >
                     Approve
                   </button>
-                  <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                  <button
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 "
+                    onClick={() => handlePostRequest(false)}
+                  >
                     Deny
                   </button>
                 </div>

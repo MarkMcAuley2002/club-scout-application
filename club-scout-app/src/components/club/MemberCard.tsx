@@ -9,13 +9,13 @@ interface MemberCardProps {
   canRemoveMember: boolean;
   member: MemberDetails;
   clubId: number;
-  viewedByOwner?: boolean;
+  viewedByOwner: boolean;
   onClick: () => void;
 }
 
 const MemberCard: React.FC<MemberCardProps> = ({
   canRemoveMember,
-  viewedByOwner = true,
+  viewedByOwner,
   member,
   clubId,
 }) => {
@@ -84,6 +84,7 @@ const MemberCard: React.FC<MemberCardProps> = ({
               onClose={closeModal}
               member={member}
               viewdByOwner={viewedByOwner}
+              club_id={clubId}
             />
           </div>
         </div>
