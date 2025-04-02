@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/lib/authOptions";
-import { editMemberSchema } from "@/app/lib/definitions";
+import { removeMemberSchema } from "@/app/lib/definitions";
 import { db } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -20,7 +20,7 @@ export async function DELETE(request: Request) {
     }
 
     const body = await request.json();
-    const { user_id, club_id } = editMemberSchema.parse(body);
+    const { user_id, club_id } = removeMemberSchema.parse(body);
 
     const response = await db.membership.delete({
       where: {

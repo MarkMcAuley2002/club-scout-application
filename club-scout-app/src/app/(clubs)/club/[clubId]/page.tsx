@@ -2,13 +2,6 @@ import ClubOneTemplate from "@/components/club/ClubOne";
 import { db } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
-/**
- * For editing the club
- * handleChange = (e) => {
- * setClub({ ...club, [e.target.name]: e.target.value });
- *
- */
-
 const ClubPage = async ({ params }: { params: { clubId: string } }) => {
   // Resolve params before using them
   // https://nextjs.org/docs/messages/sync-dynamic-apis

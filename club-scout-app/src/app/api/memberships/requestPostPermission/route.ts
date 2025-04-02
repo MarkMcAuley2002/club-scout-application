@@ -1,5 +1,5 @@
 import { authOptions } from "@/app/lib/authOptions";
-import { editMemberSchema } from "@/app/lib/definitions";
+import { requestPostPermissionSchema } from "@/app/lib/definitions";
 import { db } from "@/lib/prisma";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
@@ -18,14 +18,14 @@ export async function PATCH(request: Request) {
         { status: 400 }
       );
     }
-
+    const parsedUserId = parseInt(session.user.id);
     const body = await request.json();
-    const { user_id, club_id } = editMemberSchema.parse(body);
+    const { club_id } = requestPostPermissionSchema.parse(body);
 
     const response = await db.membership.update({
       where: {
         user_id_club_id: {
-          user_id: user_id,
+          user_id: parsedUserId,
           club_id,
         },
       },

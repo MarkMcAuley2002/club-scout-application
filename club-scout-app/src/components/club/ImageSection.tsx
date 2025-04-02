@@ -1,10 +1,23 @@
 "use client";
 import { useRef } from "react";
 import ImageCardTextCenter from "./ImageCardTextCenter";
+import { useSession } from "next-auth/react";
+import { PostPermission } from "@prisma/client";
 
-const ImageSection: React.FC = ({}) => {
-  // .toDateString()
+interface ImageSectionProps {
+  permissionStatus: PostPermission;
+  clubId: number;
+}
+// .toDateString()
+
+const ImageSection: React.FC<ImageSectionProps> = ({
+  permissionStatus,
+  clubId,
+}) => {
+  const { data: session } = useSession();
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   const handleScrollLeft = () => {
     scrollContainerRef.current?.scrollBy({ left: -620, behavior: "smooth" });
   };
@@ -13,12 +26,36 @@ const ImageSection: React.FC = ({}) => {
     scrollContainerRef.current?.scrollBy({ left: 620, behavior: "smooth" });
   };
 
+  const handleRequestPostPermission = async () => {
+    try {
+      if (!session?.user) {
+        throw Error("Unauthorized User");
+      }
+
+      const response = await fetch("/api/memberships/requestPostPermission", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          club_id: clubId,
+        }),
+      });
+
+      if (!response.ok) {
+        console.log("Failed: ", response);
+      }
+    } catch (error) {
+      console.log("Error making post: ", error);
+    }
+  };
+
   return (
-    <div className=" justify-start border-gray-500">
+    <div className=" justify-start border-gray-500 mb-5">
       <h1 className="text-3xl justify-center flex text-white m-3 mb-5">
         Club Images
       </h1>
-      <div className="relative  m-3">
+      <div className="relative ml-3 mr-3 mt-3 ">
         <div
           ref={scrollContainerRef}
           className="snap-x snap-start overflow-x-hidden flex gap-6 mt-4 whitespace-nowrap  w-full"
@@ -89,6 +126,30 @@ const ImageSection: React.FC = ({}) => {
           &rarr;
         </button>
       </div>
+      {permissionStatus === PostPermission.BASE && (
+        <div className="mt-2 text-center">
+          <p className="text-white text-lg">
+            Want to post an image of your own?
+          </p>
+          <span
+            onClick={handleRequestPostPermission}
+            className="text-white underline cursor-pointer hover:text-blue-300 "
+          >
+            Click here to request post permission.
+          </span>
+        </div>
+      )}
+      {permissionStatus === PostPermission.REQUESTED && (
+        <div className="mt-2 text-center">
+          <p className="text-white text-lg">
+            You have requested permission to post images in this club.
+          </p>
+          <p className="text-white text-lg">
+            If the club owner accepts your request you will be able to upload
+            images
+          </p>
+        </div>
+      )}
     </div>
   );
 };

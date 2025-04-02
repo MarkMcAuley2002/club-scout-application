@@ -44,36 +44,28 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
   club,
 }: ClubOneTemplateProps) => {
   const [isOwner, setOwner] = useState(false); // Extra functionality will be available if the owner is the current user
-  const [hasEditPermission, setEditPermission] = useState(false); // TODO
+  const [hasEditPermission, setEditPermission] = useState(false);
+  const [permissionStatus, setPermissionStatus] = useState<PostPermission>(
+    PostPermission.BASE
+  );
   const { data: session, status } = useSession();
 
-  // const handleLeaveClub = async () => {
-  //   if (session?.user) {
-  //     const response = await fetch("/api/memberships/leave", {
-  //       method: "DELETE",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify({
-  //         club_id: club.id,
-  //       }),
-  //     });
-
-  //     if (response.ok) {
-  //       router.push(`/`);
-  //     } else {
-  //       console.log("Error leaving club", response);
-  //     }
-  //   }
-  // };
-
-  // This will run when the page renders,
-  // If the session.user.id matches that of the club owner set owner to true
   useEffect(() => {
     if (club.createdBy.toString() === session?.user.id) {
       setOwner(true);
+      setEditPermission(true);
     }
-  }, [session]);
+    if (club.memberships) {
+      const userMembership = club.memberships.find(
+        (member) => member.user.id.toString() === session?.user.id
+      );
+      if (userMembership) {
+        setPermissionStatus(userMembership.postPermission);
+      }
+    }
+    // Set the permission status, this will be used to determine
+    // If a user can create a post
+  }, [session, club]);
 
   if (status === "loading") {
     return <div className="text-center py-10">Loading...</div>;
@@ -89,7 +81,6 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
             {club.about}
           </p>
         </section>
-        <ImageSection />
         <div className="flex justify-between">
           <EventSection
             events={club.events}
@@ -104,10 +95,11 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
             userId={parseInt(session!.user.id)}
           />
         </div>
+        <ImageSection clubId={club.id} permissionStatus={permissionStatus} />
       </div>
       <FloatingMenu
         menuType="club"
-        canEditClub={isOwner}
+        canEditClub={isOwner || permissionStatus === PostPermission.FULL}
         clubData={{
           id: club.id,
           about: club.description,
