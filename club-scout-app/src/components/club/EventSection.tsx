@@ -75,7 +75,6 @@ const EventSection: React.FC<EventSectionProps> = ({ events, canEdit }) => {
               <div className="bg-purple-200 p-4 rounded-lg justify-items-center text-center bg-opacity-50">
                 <h2 className="font-bold">{info.title}</h2>
                 <p>Date: {info.date.toDateString()}</p>
-                <p>Time: {info.date.getUTCHours()}</p>
                 <p>Details: {info.details}</p>
               </div>
             ))}

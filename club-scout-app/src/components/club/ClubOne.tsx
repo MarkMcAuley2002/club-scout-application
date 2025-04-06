@@ -101,7 +101,8 @@ const ClubOneTemplate: React.FC<ClubOneTemplateProps> = ({
       </div>
       <FloatingMenu
         menuType="club"
-        canEditClub={isOwner || permissionStatus === PostPermission.FULL}
+        canEditClub={isOwner}
+        canPostToClub={permissionStatus === PostPermission.FULL || isOwner}
         clubData={{
           id: club.id,
           about: club.description,

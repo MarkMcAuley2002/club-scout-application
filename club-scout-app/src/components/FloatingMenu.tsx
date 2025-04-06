@@ -8,6 +8,7 @@ import EditClubButton from "./buttons/EditClubButton";
 import { CurrentClubData } from "./club/ClubOne";
 import EditProfileButton from "./buttons/EditProfileButton";
 import { UserData } from "@/app/(dashboard)/profile/page";
+import CreateImagePostButton from "./buttons/CreateImagePostButton";
 
 // Renders different Menu depending on the page the user is on.
 interface FloatingMenuProps {
@@ -15,6 +16,7 @@ interface FloatingMenuProps {
   clubData?: CurrentClubData;
   userData?: UserData;
   canEditClub?: boolean;
+  canPostToClub?: boolean;
   clubId?: number;
 }
 
@@ -23,6 +25,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
   clubData,
   userData,
   canEditClub = false,
+  canPostToClub = false,
   clubId,
 }) => {
   const { data: session, status } = useSession();
@@ -52,7 +55,7 @@ const FloatingMenu: React.FC<FloatingMenuProps> = ({
               <EditClubButton clubId={clubId!} clubData={clubData!} />
             )}
             <SignOutButton />
-            {/* Add an option to upload an image if the user has permission to post */}
+            {canPostToClub && <CreateImagePostButton club_id={clubId!} />}
           </div>
         </div>
       );

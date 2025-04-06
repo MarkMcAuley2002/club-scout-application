@@ -15,7 +15,7 @@ export async function POST(request: Request) {
         { status: 401 }
       );
     }
-    const userId = parseInt(session?.user.id);
+    const parsedUserId = parseInt(session?.user.id);
 
     if (!request.body) {
       return NextResponse.json(
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       const club = await prisma.club.create({
         data: {
           name,
-          createdBy: userId,
+          createdBy: parsedUserId,
           description,
           tags: tags,
           clubImage,
@@ -53,7 +53,7 @@ export async function POST(request: Request) {
 
       await prisma.membership.create({
         data: {
-          user_id: userId,
+          user_id: parsedUserId,
           club_id: club.id,
           role: "admin",
         },

@@ -17,19 +17,10 @@ export default async function Home() {
               Welcome to the Club Scout!
             </h2>
             <p className="text-lg text-balance text-gray-700 mb-4 max-w-[600px]">
-              Here is my message about how great this app is!
+              Welcome to Club Scout 
             </p>
           </div>
-
-          {/*Search Bar Container */}
-          <div className="bg-white p-4 rounded shadow w-full sm:w-1/2 md:w-1/3 mx-auto dark:bg-gray-600">
-            <h2 className="font-bold mb-2">Search for Clubs</h2>
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-full p-2 border border-gray-300 rounded"
-            />
-          </div>
+        
           <ClubCardHolder />
         </section>
       </main>

@@ -1,9 +1,6 @@
 import React from "react";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  //   className?: string;
-  //   onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-  //   text: string;
   accent?: "navigate" | "submit" | "danger" | "create" | "join";
   loading?: boolean;
 }

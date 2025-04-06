@@ -59,8 +59,7 @@ model Image {
   uploaded_by Int
   club_id     Int
   url         String
-  description String?
-  type        String
+  description String
   upload_date DateTime @default(now())
   club        Club     @relation(fields: [club_id], references: [id])
 }

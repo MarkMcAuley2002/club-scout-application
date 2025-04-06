@@ -8,6 +8,7 @@ import { CreateClubFormData } from "@/components/modal/CreateClubModal";
 import { supabase } from "@/lib/supabaseClient";
 import { EditClubFormData } from "@/components/modal/EditClubModal";
 import { EditProfileFormData } from "@/components/modal/EditProfileModal";
+import { PostImageFormData } from "@/components/modal/PostImageToClubModal";
 
 export async function signup(prevSate: unknown, formData: FormData) {
   const validateFormFields = SignInFormSchema.safeParse({
@@ -237,6 +238,48 @@ export async function editProfile(prevState: unknown, formData: FormData) {
   }
 }
 
+export async function createClubPost(prevState: unknown, formData: FormData) {
+  const rawData: PostImageFormData = {
+    description: formData.get("description"),
+    image: formData.get("image-file"),
+    clubId: formData.get("clubId"),
+  };
+  const parsedClubId = Number(rawData.clubId);
+  try {
+    const file = rawData.image as File;
+
+    if (!file.name) {
+      return { success: false, message: "No image provided" };
+    }
+
+    const clubImageUrl = await uploadImage("club-photos", file as File);
+
+    const response = await fetch("/api/create/post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        club_id: parsedClubId,
+        description: rawData.description,
+        url: clubImageUrl,
+      }),
+    });
+
+    await response.json();
+    return { success: true, message: "Image uploaded to club" };
+  } catch (error) {
+    return { success: false, message: "Club Scout: Server error", error };
+  }
+}
+
+/**
+ * Helper function to upload images, can be reused for any image updates/posts
+ * @param uploadPath Storage bucket to upload the image to
+ * @param file The file uploaded by the user
+ * @param currentImage The current image, used for updating the profile or club if no file is provided just use the current image
+ * @returns {string} - imageUrl to send to database.
+ */
 async function uploadImage(
   uploadPath: string,
   file?: File,
@@ -252,7 +295,7 @@ async function uploadImage(
         .from(uploadPath)
         .upload(fileName, file);
       if (error) {
-        throw new Error("Error uploading image");
+        throw error;
       }
       // retrieve the new url from storage and return it.
       const { data: publicUrlData } = supabase.storage
@@ -268,6 +311,6 @@ async function uploadImage(
     }
     return imageUrl;
   } catch (error) {
-    throw Error("Error uploading Image");
+    throw error;
   }
 }

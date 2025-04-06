@@ -1,4 +1,3 @@
-import { title } from "process";
 import z, { date } from "zod";
 
 export const SignInFormSchema = z.object({
@@ -125,6 +124,12 @@ export const newEventSchema = z.object({
     .transform((date) => new Date(date)),
   details: z.string(),
   club_id: z.number(),
+});
+
+export const newImageSchema = z.object({
+  club_id: z.number(),
+  description: z.string().trim(),
+  url: z.string().trim(),
 });
 
 export const editProfileSchema = z.object({

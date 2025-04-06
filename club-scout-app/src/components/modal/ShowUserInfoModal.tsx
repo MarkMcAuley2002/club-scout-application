@@ -44,7 +44,7 @@ const ShowUserInfoModal: React.FC<ShowUserInfoModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="relative bg-white p-6 rounded-lg shadow-lg w-[25vw] h-[70vh] overflow-y-auto text-black">
+      <div className="relative bg-white p-6 rounded-lg shadow-lg w-[25vw] h-[60vh] overflow-y-auto text-black">
         <div className="flex flex-col items-center ">
           <img
             src={
