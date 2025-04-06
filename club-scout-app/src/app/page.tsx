@@ -17,7 +17,7 @@ export default async function Home() {
               Welcome to the Club Scout!
             </h2>
             <p className="text-lg text-balance text-gray-700 mb-4 max-w-[600px]">
-              Welcome to Club Scout 
+              Find your community.
             </p>
           </div>
         
