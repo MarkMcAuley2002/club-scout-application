@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id          Int          @id @default(autoincrement())
+  email       String       @unique
+  username    String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  clubs       Club[]
+  memberships Membership[]
+  profile     Profile?
+}
+
+model Profile {
+  user_id     Int     @id
+  bio         String? @default("No bio yet")
+  profile_pic String? @default("https://img.icons8.com/?size=64&id=tZuAOUGm9AuS&format=png")
+  user        User    @relation(fields: [user_id], references: [id])
+}
+
+model Club {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  tags        String[]
+  clubImage   String       @default("https://lrlhssmwttwvviyjtfes.supabase.co/storage/v1/object/public/club-card-images//1742159481855-image.png")
+  createdBy   Int
+  about       String       @default("No about section has been added to this club yet")
+  user        User         @relation(fields: [createdBy], references: [id])
+  events      Event[]
+  images      Image[]
+  memberships Membership[]
+}
+
+model Membership {
+  id             Int            @id @default(autoincrement())
+  user_id        Int
+  club_id        Int
+  role           String         @default("member")
+  postPermission PostPermission @default(BASE)
+  club           Club           @relation(fields: [club_id], references: [id])
+  user           User           @relation(fields: [user_id], references: [id])
+
+  @@unique([user_id, club_id])
+}
+
+model Image {
+  id          Int      @id @default(autoincrement())
+  uploaded_by Int
+  club_id     Int
+  url         String
+  description String
+  upload_date DateTime @default(now())
+  club        Club     @relation(fields: [club_id], references: [id])
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  date      DateTime
+  createdAt DateTime @default(now())
+  club_id   Int
+  title     String
+  details   String
+  club      Club     @relation(fields: [club_id], references: [id])
+}
+
+enum PostPermission {
+  BASE
+  REQUESTED
+  FULL
+}
